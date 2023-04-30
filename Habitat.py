@@ -1,79 +1,103 @@
- class Habitat:
-    def __init__(self, tipo_h, id_tipo_h, tipo_dieta_ah, tipo_adecuacion_h, cantidad_ah, tipo_adecu_s), temperatura:
-        self.tipo_habitad = tipo_h
-        self.id_tipo_habitad = id_tipo_h
-        self.tipo_dieta_animales = tipo_dieta_ah
-        self.tipo_adecuacion = tipo_adecuacion_h
-        self.cantidad_animales_h = 0
-        self.vector_animales = []
-        self.adecuacion_h = tipo_adecu_s
-        self.temperatura = temperatura
+import Animal
 
-    def get_tipo_h(self):
-        return self.tipo_habitad
+class Habitat:
+    def __init__(self, tipoH:str, id_tipo_h : int, tipo_dieta_ah:int, strTipoAdecuacionH:str, tipo_adecu_s:int, temperatura: tuple[int,int]):
+        self.__tipoHabitad = tipoH # string
+        self.__adecuacion = strTipoAdecuacionH # string
+        self.__tipoAdecuacion = tipo_adecu_s # int
+        self.__idTipoHabitad = id_tipo_h # int
+        self.__tipoDietaAnimales = tipo_dieta_ah # int
+        self.__cantidadAnimalesH = 0
+        self.__vectoranimales = []
+        self.__temperatura = temperatura
 
-    def get_adecuacion_s(self):
-        return self.adecuacion_h
+    def getTipoH_Str(self):
+        return self.__tipoHabitad
 
-    def set_tipo_h(self, tipo_h):
-        self.tipo_habitad = tipo_h
+    def getAdecuacion_Str(self):
+        return self.__adecuacion
 
-    def get_id_tipo_h(self):
-        return self.id_tipo_habitad
+    def getIdTipoH(self):
+        return self.__idTipoHabitad
 
-    def get_tipo_dieta(self):
-        return self.tipo_dieta_animales
+    def getTipoDieta(self):
+        return self.__tipoDietaAnimales
+    def setTipoDieta(self, tipo):
+        self.__tipoDietaAnimales = tipo
 
-    def set_tipo_dieta(self, tipo):
-        self.tipo_dieta_animales = tipo
+    def getTipoAdecuacion(self):
+        return self.__tipoAdecuacion
 
-    def get_tipo_adecuacion(self):
-        return self.tipo_adecuacion
+    def setTipoAdecuacion(self, tipo):
+        self.__tipoAdecuacion = tipo
 
-    def set_tipo_adecuacion(self, tipo):
-        self.tipo_adecuacion = tipo
+    def getCantidadAH(self):
+        return self.__cantidadAnimalesH
 
-    def get_cantidad_ah(self):
-        return self.cantidad_animales_h
-
-    def set_cantidad_ah(self, new_ca):
+    def setCantidadAH(self, new_ca:int):
         if new_ca == 1:
-            self.cantidad_animales_h += 1
+            self.__cantidadAnimalesH += 1
         else:
-            self.cantidad_animales_h -= 1
+            self.__cantidadAnimalesH -= 1
 
-    def __del__(self):
-        for animal in self.vector_animales:
-            del animal
-        self.vector_animales.clear()
+    def agregarAnimal(self, newAniamal:Animal ):
+        pass
 
-    def agregar_animal_h(self, new_animal):
-        ban = 0
-        ban_condi = 0
-        try:
-            # AGREGAR MAS CONDICIONES ANTES DE AGRAGR AL ANIMAL TENER EN CUENTA CARACTERISTICAS DEL ANIMAL Y DEL HABITAD
-            # Verifica que Tipo de habitat coincida entre el animal y el habitat
-            if self.id_tipo_habitad == new_animal.get_id_tipo_ha():
-                # verifica que el tipo de adecuacion del habitad y del animal coincidan
-                if self.tipo_adecuacion == new_animal.get_tipo_adap_a():
-                    # verifica que los animales dentro del habitat compartan la dieta del nuevo animal
-                    if self.tipo_dieta_animales == new_animal.get_tipo_dieta():
-                        # Lo ingresa pues no hay animales dentro del habitat
-                        if len(self.vector_animales) == 0:
-                            self.vector_animales.append(new_animal)
-                            ban_condi = 1
-                        # verifica que haya espacio para el animal dentro del habitat
-                        elif len(self.vector_animales) <= 14:
-                            if new_animal.get_tipo_dieta() == 1:
-                                if new_animal.get_nombre_especie() == new_animal.get_nombre_especie():
-                                    self.vector_animales.append(new_animal)
-                                    ban_condi = 1
-                                else:
-                                    print("La especies carnivoras distintas no pueden convivir juntas ")
-                                    print(new_animal.get_nombre_especie() + " y " + new_animal.get_nombre_especie())
-                                    print("Es Peligroso tenerlas Juntas intentalo en otro habitat\n")
-                            elif new_animal.get_tipo_dieta() == 3:
-                                if new_animal.get_nombre_especie() == new
+    def buscarEnHabitat(self, idA:int ):
+        indice,ban = 0,False
+        while indice < len(self.__vectoranimales) and ban == False:
+            Animal = self.__vectoranimales[indice]
+            if Animal.getIdAnimal() == idA:
+                ban = True
+            indice+=1
+        if ban == True:
+            return indice
+        else:
+            return -1
+    def sacarAnimalH(self, idA:int ):
+        indice = self.buscarEnHabitat(idA)
+        if indice >= 0:
+            try:
+                temAnimal = self.__vectoranimales.pop(indice)
+                if temAnimal in self.__vectoranimales == True:
+                    raise SystemError("Sacar y eliminar del Vector")
+                else:
+                    self.setCantidadAH(-1)
+                    return temAnimal
+            except SystemError as e:
+                return e
+        else:
+            return None
+    def eliminarAnimal(self,idA:int ):
+        indice = self.buscarEnHabitat(idA)
+        if indice >= 0:
+            animalT = self.__vectoranimales[indice]
+            try:
+                del self.__vectoranimales[indice]
+                if  animalT in self.__vectoranimales == True:
+                    raise SystemError("Eliminar del vector")
+                else:
+                    self.setCantidadAH(-1)
+                    return 1
+            except SystemError as e:
+                return e
+        else:
+            return 0
+    def retornarAnimal(self, idA:int):
+        indice = self.buscarEnHabitat(idA)
+        if indice >= 0:
+            return self.__vectoranimales[indice]
+        else:
+            return None
+
+
+
+
+
+
+
+
+
  
     
 
