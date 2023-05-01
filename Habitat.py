@@ -34,14 +34,59 @@ class Habitat:
     def getCantidadAH(self):
         return self.__cantidadAnimalesH
 
+    def getTuplaTemH(self):
+        return self.__temperatura
+    def getVectorAH(self):
+        return self.__vectoranimales
+
+
     def setCantidadAH(self, new_ca:int):
         if new_ca == 1:
             self.__cantidadAnimalesH += 1
         else:
             self.__cantidadAnimalesH -= 1
 
-    def agregarAnimal(self, newAniamal:Animal ):
-        pass
+    def agregarAnimalH(self, newAniamal:Animal ):
+        resFuncion = 0 # numero 1,siginifica que el proseso funciono,  numeros negativos representan errores o fallo en condiciones
+        Animal = newAniamal
+        if Animal.getIdTipoHA() == self.getIdTipoH():
+            if Animal.getTipoAdapA() == self.getTipoAdecuacion():
+                if Animal.getTipoDieta() == self.getTipoDieta():
+                    if (Animal.getTuplaTemA()[0] >= self.getTuplaTemH()[0] )and(Animal.getTuplaTemA()[1] <= self.getTuplaTemH()[1]):
+                        if len(self.__vectoranimales) == 0:
+                            self.__vectoranimales.append(Animal)
+                            resFuncion = 1
+
+                        elif len(self.__vectoranimales) <= 12:
+                            if Animal.getTipoDieta() == 1 or Animal.getTipoDieta() == 3:
+                                if Animal.getNombreEspecie() == self.__vectoranimales[0].getNombreEspecie():
+                                    self.__vectoranimales.append(Animal)
+                                    resFuncion = 1
+                                else:
+                                    resFuncion = -1 # Especies distintas, peligroso juntarlas
+
+                            else:
+                                self.__vectoranimales.append(Animal)
+                                resFuncion = 1
+
+                        else:
+                            resFuncion = -2 # no hay especio en el habitat
+
+                    else:
+                        resFuncion = -3 # temperaturas no adecuadas para el animal
+
+                else:
+                    resFuncion = -4 # Tipo de dieta animales diferentes
+
+            else:
+                resFuncion = -5 # Adecuacion diferente a la que nesecita el animal
+        else:
+            resFuncion = -6 # Habitat Erroneo para el animal
+
+        if resFuncion == 1:
+            self.setCantidadAH(1)
+
+        return resFuncion
 
     def buscarEnHabitat(self, idA:int ):
         indice,ban = 0,False

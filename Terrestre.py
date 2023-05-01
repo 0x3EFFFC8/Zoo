@@ -11,7 +11,7 @@ class Terrestre(Animal):
 
     def getTipoAdapA_str(self):
         super().getTipoAdapA_str()
-        return self._idAdaptacion
+        return self._adaptacion
 
     def jugar(self):
         super().jugar()

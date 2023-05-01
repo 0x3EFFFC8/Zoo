@@ -38,6 +38,10 @@ class Zoologico:
 
     def getTotalHZoo(self):
         return self.__totalH
+    def getMapa(self):
+        return self._mapaHabitats
+    def getBodega(self):
+        return self.__bodegaA
 
     def setTotalHZoo(self, accion: int):
         if accion == 1:
@@ -70,8 +74,6 @@ class Zoologico:
             else:
                 return 2 #Hay Animales en el Habitat
         return 0 #No encontro el habitat
-    def retornaHabitat(self, keyBusqueda:int):
-        return self._mapaHabitats[keyBusqueda]
 
     def moverAnimal(self, keyHSalida, keyHentrada,idAnimal):
         banGeneral = 0
@@ -80,18 +82,72 @@ class Zoologico:
         if banHEntrada == True and banHSalida == True:
             temHSalida = self._mapaHabitats[keyHSalida]
             temAnimal = temHSalida.retornarAnimal(idAnimal)
-            if temAnimal != None:
-                pass
+            if type(temAnimal) == Animal:
+                temHllegada = self._mapaHabitats[keyHentrada]
+                banProcesoIngreso =  temHllegada.agregarAnimalH(temAnimal)
+                if banProcesoIngreso == 1:
+                    temHllegada.setCantidadAH(1)
+                    temHSalida.setCantidadAH(-1)
+                    banGeneral = 1
+                else:
+                    banGeneral = banProcesoIngreso
             else:
-                banGeneral = -2 # El animal no fue encontrado dentro del Habitat de salida
+                banGeneral = -7 # El animal no fue encontrado dentro del Habitat de salida
         else:
             if banHEntrada == False and banHSalida == False:
-                banGeneral = -3 # Los 2 habitats no fueron encontrados
+                banGeneral = -8 # Los 2 habitats no fueron encontrados
             elif banHSalida == False:
-                banGeneral = -4 # El habitat de Salida no fue encontrado
+                banGeneral = -9 # El habitat de Salida no fue encontrado
             else:
-                banGeneral = -5 # El habitat de llegada no fue encontrado
+                banGeneral = -10 # El habitat de llegada no fue encontrado
         return banGeneral
+
+    def agregarAnimalBodega(self, newAnimal:int):
+        self.__bodegaA.append(newAnimal)
+        self.setTotalAZoo(1)
+
+
+    def animalEnBodega(self,idA):
+        indice = 0
+        tamBodega = len(self.__bodegaA)
+        if tamBodega >0:
+            ban = False
+            while indice < tamBodega and ban == False:
+                temAnimal = self.__bodegaA[indice]
+                if temAnimal.getIdAnimal() == idA:
+                    ban == True
+                else:
+                    indice+=1
+            if ban == False:
+                indice = -1
+
+        else:
+            indice = -1
+        return indice
+    def sacarAnimalBodega(self, idAnimal:int):
+
+        indice = self.animalEnBodega(idAnimal)
+        if indice >=0:
+            return self.__bodegaA.pop(indice)
+        else:
+            return None
+    def eliminarAnimalBodega(self, idAnimal: int):
+        indice = self.animalEnBodega(idAnimal)
+        if indice>=0:
+            try:
+                del self.__bodegaA[indice]
+                if self.animalEnBodega(idAnimal) == -1:
+                    ban = 1 # procesoExitoso
+                else:
+                    raise SystemError("Eliminar en Bodega")
+
+            except SystemError as e:
+                return e # retorna el eror
+        else:
+            ban = -1 # no se encontro animal
+        return ban
+
+
 
 
 

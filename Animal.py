@@ -3,14 +3,17 @@
 
 from abc import ABC,abstractmethod
 class Animal(ABC):
-    def __init__(self, idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ):
+    def __init__(self, idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ,tem:tuple):
         self._idAnimal = idAnimal
         self._tipoHabitat = tipoH
         self._nombreEspecie = nombreEspecie
         self._nombreAnimal = nombre
         self._tipoDieta = tipoDieta
+        self._adaptacion = None
+        self._idAdaptacion = None
         self._tipoHabitatstr = tipoHabi
         self._horasDormir = horasD
+        self._temA = tem
         self._boolDormir = False
         self._edad = edad
         self._boolJuego = False
@@ -46,8 +49,14 @@ class Animal(ABC):
     def getBoolJuego(self):
         return self._boolJuego
 
+    def getTuplaTemA(self):
+        return self._temA
+
+    def setTuplaTemA(self, newTupla: tuple):
+        self._temA = newTupla
     def setEdad(self, newEdad:int):
         self._edad = newEdad
+
 
     def agregarAlimiento(self, newAlimento):
         try:
@@ -104,6 +113,7 @@ class Animal(ABC):
     @abstractmethod
     def Comer(self):
         pass
+
 
 
 
