@@ -76,9 +76,9 @@ class Zoologico:
         return 0 #No encontro el habitat
 
     def moverAnimal(self, keyHSalida, keyHentrada,idAnimal):
-        banGeneral = 0
         banHSalida = keyHSalida in self._mapaHabitats
         banHEntrada = keyHentrada in self._mapaHabitats
+        banGeneral = 0
         if banHEntrada == True and banHSalida == True:
             temHSalida = self._mapaHabitats[keyHSalida]
             temAnimal = temHSalida.retornarAnimal(idAnimal)
@@ -110,7 +110,7 @@ class Zoologico:
     def animalEnBodega(self,idA):
         indice = 0
         tamBodega = len(self.__bodegaA)
-        if tamBodega >0:
+        if tamBodega > 0:
             ban = False
             while indice < tamBodega and ban == False:
                 temAnimal = self.__bodegaA[indice]
@@ -133,10 +133,12 @@ class Zoologico:
             return None
     def eliminarAnimalBodega(self, idAnimal: int):
         indice = self.animalEnBodega(idAnimal)
+        ban = 0
         if indice>=0:
             try:
                 del self.__bodegaA[indice]
                 if self.animalEnBodega(idAnimal) == -1:
+                    self.setTotalAZoo(-1)
                     ban = 1 # procesoExitoso
                 else:
                     raise SystemError("Eliminar en Bodega")
@@ -146,6 +148,22 @@ class Zoologico:
         else:
             ban = -1 # no se encontro animal
         return ban
+    def agregarAnimalH(self, animalB : Animal , idHabitat : int):
+        banHabitat = idHabitat in self._mapaHabitats
+        banGeneral = 0
+        if banHabitat == True:
+            banIngreso = self._mapaHabitats[idHabitat].agregarAnimalH(animalB)
+            if banIngreso == 1:
+                self._mapaHabitats[idHabitat].setCantidadAH(1)
+                banGeneral = 1
+            else:
+                banGeneral = banIngreso
+        else:
+            banGeneral = -10 # Habitat De llegada no encontrado
+        return banGeneral
+    def retornarAnimalBodega(self, idA:int):
+        return self.__bodegaA[idA]
+
 
 
 

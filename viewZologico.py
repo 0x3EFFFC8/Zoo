@@ -121,7 +121,7 @@ def mostrarTituloMenuP(opcS:int):
         res = "[--] Saliendo [--]"
     else:
         res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
-def mostrarTitulosSubMenoH(opcH:int):
+def mostrarTitulosSubMenuH(opcH:int):
     if opcH == 1:
         res = "[--] Agregar Animal Habitat [--]"
     elif opcH == 2:
@@ -135,7 +135,39 @@ def mostrarTitulosSubMenoH(opcH:int):
     else:
         res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
 
+def menuBodega():
+    print("*** |  Bienvenido ala Bodega del Zoologico | ***")
+    print("[1] Agregar Animal")
+    print("[2] Eliminar Animal ")
+    print("[3] Mover a Habitat")
+    print("[4] Mostrar Bodega ")
+    print("[0] Salir de la bodega \n")
+    print("Ingrese la obcion deseada: ")
 
+def mostrarTitulosSubMenuB(opcH:int):
+    if opcH == 1:
+        res = "[--] Agregar Animal a la bodega [--]"
+    elif opcH == 2:
+        res = "[--] Sacar Animal de la bodega[--]"
+    elif opcH == 3:
+        res = "[--] Trasladar Animal [--]"
+    elif opcH == 4:
+        res = "[--] Mostrando Bodega [--]"
+    elif opcH == 0:
+        res = "[--] Saliendo del la bodega[--]"
+    else:
+        res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
+
+def mostrarBodega(bodega:list[Animal], dicD :dict):
+    tamB = len(bodega)
+    if tamB == 0:
+        print("! Bodega Vacia ¡")
+        print("No hay Animales dentro de la bodega")
+    else:
+        print("Animales en Bodega = ",tamB)
+        i = 0
+        while i < tamB:
+            mostrarAnimal(bodega[i],dicD)
 
 
 
