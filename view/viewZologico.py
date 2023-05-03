@@ -22,16 +22,18 @@ class viewZoologico:
 
     def mostrarHabitats(self,zoologicoA : model.Zoologico):
         mapa = zoologicoA.getMapa
-        print("El Zoologico Cuenta con ", zoologicoA.getTotalHZoo(), " Habitats actualmente.")
-        print("El Zoologico cuenta con", zoologicoA.getTotalAZoo(), " Animales actualmente.\n")
-
-        for key, Habitat in mapa:
-            print("  Habitat con el Id: ", key)
-            print("      Tipo de Habitat: ", Habitat.getTipoH_Str())
-            print("      Tipo de Adecuacion: ", Habitat.getAdecuacion_Str())
-            print("      Dieta de los Animales: ", self.dicDieta[Habitat.getTipoDieta()])
-            print("      Cantidad Animales dentro del Habitat: ", Habitat.getCantidadAH())
-            print("      Tem Min = ", Habitat.getTuplaTemH()[0]," - Tem Max = ",Habitat.getTuplaTemH()[1], " Cº")
+        if len(mapa) != 0:
+            print("El Zoologico Cuenta con ", zoologicoA.getTotalHZoo(), " Habitats actualmente.")
+            print("El Zoologico cuenta con", zoologicoA.getTotalAZoo(), " Animales actualmente.\n")
+            for key, Habitat in mapa:
+                print("  Habitat con el Id: ", key)
+                print("      Tipo de Habitat: ", Habitat.getTipoH_Str())
+                print("      Tipo de Adecuacion: ", Habitat.getAdecuacion_Str())
+                print("      Dieta de los Animales: ", self.dicDieta[Habitat.getTipoDieta()])
+                print("      Cantidad Animales dentro del Habitat: ", Habitat.getCantidadAH())
+                print("      Tem Min = ", Habitat.getTuplaTemH()[0]," - Tem Max = ",Habitat.getTuplaTemH()[1], " Cº")
+        else:
+            print("El Zoologico se encuentra vacio no hay habitats aun.")
 
     def mostrarAnimal( self,animal : model.Animal ):
 
@@ -61,17 +63,15 @@ class viewZoologico:
         print("[2] Acuaticos")
         print("[3] SemiAcuatico")
         print("[4] Volador")
-        print("[0] Salir")
         print("Elija una de esas opciones: ")
 
     def panelDieta(self):
         print("[1] Carnivoro")
         print("[2] Herbiboro")
         print("[3] Omniboro")
-        print("[0] Salir")
         print("Elija una de esas opciones: ")
 
-    def panelTipoHabitat(uso):
+    def panelTipoHabitat(self):
         print("[1] Selvatico")
         print("[2] Bosque")
         print("[3] Desertico")
@@ -81,7 +81,6 @@ class viewZoologico:
         print("[7] Montañoso")
         print("[8] Tropical")
         print("[9] Sabana")
-        print("[0] Salir")
         print("Elija una de esas opciones: ")
 
     def subMenuHabitat(self,habitat:model.Habitat,idH:int):
@@ -123,6 +122,7 @@ class viewZoologico:
             res = "[--] Saliendo [--]"
         else:
             res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
+        print(res)
     def mostrarTitulosSubMenuH(self,opcH:int):
         if opcH == 1:
             res = "[--] Agregar Animal Habitat [--]"

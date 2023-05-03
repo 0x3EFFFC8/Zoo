@@ -151,7 +151,7 @@ class Zoologico:
     def agregarAnimalH(self, animalB : Animal , idHabitat : int):
         banHabitat = idHabitat in self._mapaHabitats
         banGeneral = 0
-        if banHabitat == True:
+        if banHabitat:
             banIngreso = self._mapaHabitats[idHabitat].agregarAnimalH(animalB)
             if banIngreso == 1:
                 self._mapaHabitats[idHabitat].setCantidadAH(1)
