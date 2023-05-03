@@ -1,4 +1,4 @@
-from abc import ABC,abstractmethod
+from abc import ABC,abstractmethod 
 
 class Animal(ABC):
     def __init__(self, idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ,tem:tuple):
@@ -15,6 +15,7 @@ class Animal(ABC):
         self._boolDormir = False
         self._edad = edad
         self._boolJuego = False
+        self._stComer = 0
         
     def getIdAnimal(self):
         return self._idAnimal
@@ -75,12 +76,38 @@ class Animal(ABC):
     def jugar(self):
         pass
 
-    @abstractmethod
-    def Comer(self):
-        pass
+    def Comer(self, alimentos, alimento):
+    
+        if ._tipoDieta == 1:
+            
+            if(alimentos.verificarCarnivoros(alimento,._idAdaptacion))
+                alimentos.deleteAlimentoC(alimento,._idAdaptacion)
+                print("Comiendo {alimento}...\n")
 
+            else
+                print("El alimento {alimento}, no se encuentra\n")
+                
+        elif ._tipoDieta == 2:
 
+            if(alimentos.verificarHerbivoros(alimento,._idAdaptacion))
+                alimentos.deleteAlimentoH(alimento,._idAdaptacion)
+                print("Comiendo {alimento}...\n")
 
+            else
+                print("El alimento {alimento}, no se encuentra\n")
+
+        elif ._tipoDieta == 3:
+
+            
+            if(alimentos.verificarCarnivoros(alimento,._idAdaptacion))
+                alimentos.deleteAlimentoC(alimento,._idAdaptacion)
+                print("Comiendo {alimento}...\n")
+
+            elif(alimentos.verificarHerbivoros(alimento,._idAdaptacion))
+                alimentos.deleteAlimentoH(alimento,._idAdaptacion)
+                print("Comiendo {alimento}...\n")
+             else
+                print("El alimento {alimento}, no se encuentra\n")
 
 
 
