@@ -22,17 +22,27 @@ class Alimento:
             print(f"{i}\t\t{j}")
 
     def editAlimento(self, alimento_old, alimento_new, tipo_animal):
-        if tipo_animal == "carnivoros":
+        if tipo_animal == 1:
             if alimento_old in self.carnivoros:
                 self.carnivoros.discard(alimento_old)
                 self.carnivoros.add(alimento_new)
             else:
                 print("El alimento no se encuentra en la lista de alimentos para carnívoros.")
-        elif tipo_animal == "herbivoros":
+        elif tipo_animal == 2:
             if alimento_old in self.herbivoros:
                 self.herbivoros.discard(alimento_old)
                 self.herbivoros.add(alimento_new)
             else:
                 print("El alimento no se encuentra en la lista de alimentos para herbívoros.")
+        else
+            if alimento_old in self.carnivoros:
+                self.carnivoros.discard(alimento_old)
+                self,carnivoros.add(alimento_new)
+            else if alimento_old in self.herbivoros:
+                self.herbivoros.discard(alimento_old)
+                self.herbívoros.add(alimento_new)
+            else:
+                printf("El alimento no se encuentra en la lista de alimentos para omnivoro")
+
 
 

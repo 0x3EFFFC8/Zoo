@@ -1,7 +1,5 @@
-
-
-
 from abc import ABC,abstractmethod
+
 class Animal(ABC):
     def __init__(self, idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ,tem:tuple):
         self._idAnimal = idAnimal
@@ -17,7 +15,6 @@ class Animal(ABC):
         self._boolDormir = False
         self._edad = edad
         self._boolJuego = False
-        self._listaAlimentos = []
         
     def getIdAnimal(self):
         return self._idAnimal
@@ -54,41 +51,9 @@ class Animal(ABC):
 
     def setTuplaTemA(self, newTupla: tuple):
         self._temA = newTupla
+    
     def setEdad(self, newEdad:int):
         self._edad = newEdad
-
-
-    def agregarAlimiento(self, newAlimento):
-        try:
-            self._listaAlimentos.append(newAlimento)
-            if newAlimento in self._listaAlimentos == False:
-                raise SystemError("Agregar alimento en lista")
-            else:
-                return 1
-        except SystemError as e:
-            return e
-
-
-    def eliminarAlimento(self,nombreAlimento):
-        indice,ban = 0,False
-        try:
-            for alimento in self._listaAlimentos:
-                if alimento.getNombreAli == nombreAlimento:
-                    temAlimento = self._listaAlimentos[indice]
-                    del self._listaAlimentos[indice]
-
-                    break
-
-                indice+=1
-            if ban == False:
-                return 2 # No encontro Alimento
-            else:
-                if temAlimento in self._listaAlimentos == True:
-                    raise SystemError("Eliminar alimento en lista")
-                else:
-                    return 1
-        except SystemError as e:
-            return e
 
     def dormir(self):
         if self._boolDormir == False:
@@ -113,6 +78,8 @@ class Animal(ABC):
     @abstractmethod
     def Comer(self):
         pass
+
+
 
 
 
