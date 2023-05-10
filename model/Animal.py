@@ -78,7 +78,7 @@ class Animal(ABC):
 
     def Comer(self, alimentos, alimento):
     
-        if ._tipoDieta == 1:
+        if _tipoDieta == 1:
             
             if(alimentos.verificarCarnivoros(alimento,._idAdaptacion))
                 alimentos.deleteAlimentoC(alimento,._idAdaptacion)
@@ -87,7 +87,7 @@ class Animal(ABC):
             else
                 print("El alimento {alimento}, no se encuentra\n")
                 
-        elif ._tipoDieta == 2:
+        elif _tipoDieta == 2:
 
             if(alimentos.verificarHerbivoros(alimento,._idAdaptacion))
                 alimentos.deleteAlimentoH(alimento,._idAdaptacion)
@@ -96,7 +96,7 @@ class Animal(ABC):
             else
                 print("El alimento {alimento}, no se encuentra\n")
 
-        elif ._tipoDieta == 3:
+        elif _tipoDieta == 3:
 
             
             if(alimentos.verificarCarnivoros(alimento,._idAdaptacion))
