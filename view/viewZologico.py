@@ -168,6 +168,65 @@ class viewZoologico:
             while i < tamB:
                 self.mostrarAnimal(bodega[i])
 
+    def menuAlimentos(self):
+
+        print("[1] Terrestres")
+        print("[2] Acuaticos")
+        print("[3] Semi Acuaticos")
+        print("[4] Voladores")
+        print("[0] Salir")
+        print("[*] Ingrese la opcion deseada: ")
+
+    def subMenuAlimentos(self):
+        
+        print("[1] Carnivoros")
+        print("[2] Herbivoros")
+        print("[3] Omnivoros")
+        print("[*] Ingrese la opcion deseada: ")
+
+    def printAlimentos(self, ocpT, ocpD,alimento):
+
+        if ocpT == 1 and ocpD == 1:
+            for i in alimento.terrestresC: print(i)
+
+        elif ocpT == 1 and ocpD == 2:
+            for i in alimento.terrestresH: print(i)
+
+        elif ocpT == 1 and ocpD == 3:
+            for i, j in zip(alimento.terrestresC, alimento.terrestresH):
+                print(f"{terrestresC:<10} {terrestresH}")
+        
+        elif ocpT == 2 and ocpD == 1:
+            for i in alimento.acuaticoC: print(i)
+
+        elif ocpT == 2 and ocpD == 2:
+            for i in alimento.acuaticoH: print(i)
+        
+        elif ocpT == 2 and ocpD == 3:
+             for i, j in zip(alimento.acuaticoC, alimento.acuaticoH):
+                print(f"{acuaticoC:<10} {acuaticoH}")
+
+        elif ocpT == 3 and ocpD == 1:
+            for i in alimento.semiAcuaticoC: print(i)
+
+        elif ocpT == 3 and ocpD == 2:
+            for i in alimento.semiAcuaticoH: print(i)
+        
+        elif ocpT == 3 and ocpD == 3:
+             for i, j in zip(alimento.semiAcuaticoC, alimento.semiAcuaticoH):
+                print(f"{semiAcuaticoC:<10} {semiAcuaticoH}")
+
+        elif ocpT == 4 and ocpD == 1:
+            for i in alimento.voladorC: print(i)
+
+        elif ocpT == 4 and ocpD == 2:
+            for i in alimento.voladorH: print(i)
+
+        elif ocpT == 4 and ocpD == 3:
+             for i, j in zip(alimento.voladorC, alimento.voladorH):
+                print(f"{voladorC:<10} {voladorH}")
+
+
 
 
 
