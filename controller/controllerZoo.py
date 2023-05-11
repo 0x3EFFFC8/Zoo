@@ -23,7 +23,7 @@ class controllerZoo:
             else:
                 raise TypeError("Solo se aceptan valores enteros")
         except TypeError as e:
-            return e
+            return e.args
 
     def crearHabitat(self):
         resU = ""
@@ -50,7 +50,7 @@ class controllerZoo:
                             self.temHabitat = model.Habitat(self._dicTipoH[opcTipoH], opcTipoH, opcDieta, self._dicAdecuacion[opcAde], opcAde, opcionesTem)
                             res = self._Zoologico.agregarHabitat(self.temHabitat)
                             if res != 1:
-                                 error = res.args
+                                 error = res
                         else:
                             error = "Los Valores de la tem min deben ser menores que los de la tem maxima"
                     else:
@@ -87,10 +87,10 @@ class controllerZoo:
                     pass
                 elif opc == 5:
                     pass
-                elif opc == 6:
-                    pass
+                else:
+                    print("Obcion Invalidad")
             else:
-                print("Se ha Generado un Error: ", opc.args)
+                print("Se ha Generado un Error: ", opc)
 
 
 

@@ -46,7 +46,7 @@ class Habitat:
             self.__cantidadAnimalesH -= 1
 
     def agregarAnimalH(self, newAniamal:Animal ):
-        resFuncion = 0 # numero 1,siginifica que el proseso funciono,  numeros negativos representan errores o fallo en condiciones
+        resFuncion = None
         Animal = newAniamal
         if Animal.getIdTipoHA() == self.getIdTipoH():
             if Animal.getTipoAdapA() == self.getTipoAdecuacion():
@@ -55,32 +55,31 @@ class Habitat:
                         if len(self.__vectoranimales) == 0:
                             self.__vectoranimales.append(Animal)
                             resFuncion = 1
-
                         elif len(self.__vectoranimales) <= 12:
                             if Animal.getTipoDieta() == 1 or Animal.getTipoDieta() == 3:
                                 if Animal.getNombreEspecie() == self.__vectoranimales[0].getNombreEspecie():
                                     self.__vectoranimales.append(Animal)
-                                    resFuncion = 1
+                                    resFuncion = 1 # Proseso Exitoso
                                 else:
-                                    resFuncion = -1 # Especies distintas, peligroso juntarlas
+                                    resFuncion = "Las especie dentro del habitat es distinta a la del nuevo animal\n ¡Es peligroso juntarlas¡"
 
                             else:
                                 self.__vectoranimales.append(Animal)
                                 resFuncion = 1
 
                         else:
-                            resFuncion = -2 # no hay especio en el habitat
+                            resFuncion = "No hay especio en el Habitat"
 
                     else:
-                        resFuncion = -3 # temperaturas no adecuadas para el animal
+                        resFuncion = "Las Temperaturas no son adecuadas para el animal"
 
                 else:
-                    resFuncion = -4 # Tipo de dieta animales diferentes
+                    resFuncion = "El Tipo de dieta del animal es diferente al de los otros Animales dentro del Habitat"
 
             else:
-                resFuncion = -5 # Adecuacion diferente a la que nesecita el animal
+                resFuncion = "La adecuacion del Habitat es diferente a la que nesecita el animal"
         else:
-            resFuncion = -6 # Habitat Erroneo para el animal
+            resFuncion = "El habitat no es adecuado para el animal"
 
         if resFuncion == 1:
             self.setCantidadAH(1)

@@ -12,9 +12,8 @@ class viewZoologico:
         print("[1] Ver mapa Zoologico ")
         print("[2] Crear habitat ")
         print("[3] Ver Habitat ")
-        print("[4] Eliminar Habitad del Zoologico ")
-        print("[5] Mover Animal de Habitat")
-        print("[6] Bodega")
+        print("[4] Eliminar Habitad del Zoologico.")
+        print("[5] Bodega")
         print("[0] Salir del Zoologico \n")
         print ("Ingrese la obcion deseada: ")
 
@@ -115,8 +114,6 @@ class viewZoologico:
         elif opcS == 4:
             res = "[--] Eliminar Habitat del Zoologico [--]"
         elif opcS == 5:
-            res = "[--] Mover Animal de Habitat [--]"
-        elif opcS == 6:
             res = "[--] Bodega del Zoologico [--]"
         elif opcS == 0:
             res = "[--] Saliendo [--]"

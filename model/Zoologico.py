@@ -71,35 +71,8 @@ class Zoologico:
                 self.setTotalHZoo(-1)
                 return 1 # Encontro Habitat y esta vacio eliminación, se llevo a cabo la eliminacion
             else:
-                return "No hay Animales en el Habitat"
+                return "Hay Animales en el Habitat.\nNo Es Posible Eliminar"
         return "No se encontro el habitat en el Zoologico"
-
-    def moverAnimal(self, keyHSalida, keyHentrada,idAnimal):
-        banHSalida = keyHSalida in self._mapaHabitats
-        banHEntrada = keyHentrada in self._mapaHabitats
-        banGeneral = 0
-        if banHEntrada == True and banHSalida == True:
-            temHSalida = self._mapaHabitats[keyHSalida]
-            temAnimal = temHSalida.retornarAnimal(idAnimal)
-            if type(temAnimal) == Animal:
-                temHllegada = self._mapaHabitats[keyHentrada]
-                banProcesoIngreso =  temHllegada.agregarAnimalH(temAnimal)
-                if banProcesoIngreso == 1:
-                    temHllegada.setCantidadAH(1)
-                    temHSalida.setCantidadAH(-1)
-                    banGeneral = 1
-                else:
-                    banGeneral = banProcesoIngreso
-            else:
-                banGeneral = -7 # El animal no fue encontrado dentro del Habitat de salida
-        else:
-            if banHEntrada == False and banHSalida == False:
-                banGeneral = -8 # Los 2 habitats no fueron encontrados
-            elif banHSalida == False:
-                banGeneral = -9 # El habitat de Salida no fue encontrado
-            else:
-                banGeneral = -10 # El habitat de llegada no fue encontrado
-        return banGeneral
 
     def agregarAnimalBodega(self, newAnimal:int):
         self.__bodegaA.append(newAnimal)
