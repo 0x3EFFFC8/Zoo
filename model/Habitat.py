@@ -39,7 +39,6 @@ class Habitat:
     def getVectorAH(self):
         return self.__vectoranimales
 
-
     def setCantidadAH(self, new_ca:int):
         if new_ca == 1:
             self.__cantidadAnimalesH += 1
@@ -90,15 +89,19 @@ class Habitat:
 
     def buscarEnHabitat(self, idA:int ):
         indice,ban = 0,False
-        while indice < len(self.__vectoranimales) and ban == False:
-            Animal = self.__vectoranimales[indice]
-            if Animal.getIdAnimal() == idA:
-                ban = True
-            indice+=1
-        if ban == True:
-            return indice
+        tam = len(self.__vectoranimales)
+        if tam > 0:
+            while indice < tam and ban == False:
+                temAnimal = self.__vectoranimales[indice]
+                if temAnimal.getIdAnimal() == idA:
+                    ban = True
+                indice+=1
+            if ban == True:
+                return indice
+            else:
+                return "El animal no fue encontrado"
         else:
-            return -1
+            return "No hay Animales en el habitat"
     def sacarAnimalH(self, idA:int ):
         indice = self.buscarEnHabitat(idA)
         if indice >= 0:
@@ -110,7 +113,7 @@ class Habitat:
                     self.setCantidadAH(-1)
                     return temAnimal
             except SystemError as e:
-                return e
+                return e.args
         else:
             return None
     def eliminarAnimal(self,idA:int ):
@@ -125,9 +128,9 @@ class Habitat:
                     self.setCantidadAH(-1)
                     return 1
             except SystemError as e:
-                return e
+                return e.args
         else:
-            return 0
+            return "No Se encontro Animal"
     def retornarAnimal(self, idA:int):
         indice = self.buscarEnHabitat(idA)
         if indice >= 0:

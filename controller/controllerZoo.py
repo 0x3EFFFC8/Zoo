@@ -26,6 +26,8 @@ class controllerZoo:
             return e
 
     def crearHabitat(self):
+        resU = ""
+        error = ""
         print("Ingres el tipo de Adecuacion del Habitat")
         self._viewZologico.panelAdecuacion()
         opcAde = self.recibirOpcion(input())
@@ -48,24 +50,29 @@ class controllerZoo:
                             self.temHabitat = model.Habitat(self._dicTipoH[opcTipoH], opcTipoH, opcDieta, self._dicAdecuacion[opcAde], opcAde, opcionesTem)
                             res = self._Zoologico.agregarHabitat(self.temHabitat)
                             if res != 1:
-                                pass # captura un error, res seria de la clase error
+                                 error = res.args
                         else:
-                            pass # error poner las temperaturas
+                            error = "Los Valores de la tem min deben ser menores que los de la tem maxima"
                     else:
-                        pass # error opcion Dieta invalida o vale 0
+                        error = "Dieta invalida o vale 0 "
                 else:
-                    pass # error opcion tipo habitat o vale 0
+                     error = "opcion tipo habitat o vale 0"
             else:
-                pass # error opcion Adecuaciono o valio 0
+                error = "opcion Adecuaciono o valio 0"
         else:
-            pass # Error al ingresar las opciones no son enteros son de la clase error
+            error = "Ingreso Solo de Enteros, se detectaron caracteres"
+
+        if error == "":
+            resU = "Proceso Exitoso."
+            print(resU)
+        else:
+            resU = "Error: "
+            print(resU, error)
     def menuZoo(self):
         ban = True
         while ban:
-
             self._viewZologico.menuZoologico(self._Zoologico)
             opc = self.recibirOpcion(input())
-
             if type(opc) == int:
                 self._viewZologico.mostrarTituloMenuP(opc)
                 if opc == 0:
@@ -74,7 +81,6 @@ class controllerZoo:
                     self._viewZologico.mostrarHabitats(self._Zoologico)
                 elif opc == 2:
                     self.crearHabitat()
-                    pass
                 elif opc == 3:
                     pass
                 elif opc == 4:
@@ -84,9 +90,7 @@ class controllerZoo:
                 elif opc == 6:
                     pass
             else:
-                print("Se ha Generado un Error: ", opc)
-
-
+                print("Se ha Generado un Error: ", opc.args)
 
 
 

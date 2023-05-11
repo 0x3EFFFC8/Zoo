@@ -14,7 +14,6 @@ class Zoologico:
         self.__totalA = 0
         self.__creadorKeys = 0
         self.__creadorIds = 0
-
     def getNombre(self):
         return self.__nombreZ
     def getCreadorId(self):
@@ -61,7 +60,7 @@ class Zoologico:
                 return 1 # si el proceso salio bien
 
         except IndexError as e:
-            return e # si el proceso falla
+            return e.args # si el proceso falla
 
     def eliminarHabitat(self, keyBusqueda:int):
 
@@ -72,8 +71,8 @@ class Zoologico:
                 self.setTotalHZoo(-1)
                 return 1 # Encontro Habitat y esta vacio eliminación, se llevo a cabo la eliminacion
             else:
-                return 2 #Hay Animales en el Habitat
-        return 0 #No encontro el habitat
+                return "No hay Animales en el Habitat"
+        return "No se encontro el habitat en el Zoologico"
 
     def moverAnimal(self, keyHSalida, keyHentrada,idAnimal):
         banHSalida = keyHSalida in self._mapaHabitats
@@ -115,15 +114,15 @@ class Zoologico:
             while indice < tamBodega and ban == False:
                 temAnimal = self.__bodegaA[indice]
                 if temAnimal.getIdAnimal() == idA:
-                    ban == True
+                    ban = True
+                    return indice
                 else:
                     indice+=1
             if ban == False:
-                indice = -1
+                return "No se encontro Animal en la Bodega"
 
         else:
-            indice = -1
-        return indice
+            return "No Hay animales en la Bodega"
     def sacarAnimalBodega(self, idAnimal:int):
 
         indice = self.animalEnBodega(idAnimal)
@@ -133,7 +132,7 @@ class Zoologico:
             return None
     def eliminarAnimalBodega(self, idAnimal: int):
         indice = self.animalEnBodega(idAnimal)
-        ban = 0
+        ban = None
         if indice>=0:
             try:
                 del self.__bodegaA[indice]
@@ -144,9 +143,9 @@ class Zoologico:
                     raise SystemError("Eliminar en Bodega")
 
             except SystemError as e:
-                return e # retorna el eror
+                return e.args # retorna el error
         else:
-            ban = -1 # no se encontro animal
+            ban = indice
         return ban
     def agregarAnimalH(self, animalB : Animal , idHabitat : int):
         banHabitat = idHabitat in self._mapaHabitats
@@ -159,10 +158,10 @@ class Zoologico:
             else:
                 banGeneral = banIngreso
         else:
-            banGeneral = -10 # Habitat De llegada no encontrado
+            banGeneral = "Habitat De llegada no encontrado"
         return banGeneral
-    def retornarAnimalBodega(self, idA:int):
-        return self.__bodegaA[idA]
+    def retornarAnimalBodega(self, indA:int):
+        return self.__bodegaA[indA]
 
 
 
