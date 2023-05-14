@@ -22,5 +22,3 @@ class SemiAcuatico(Animal):
             self._boolJuego = False
             return "Esta reposando en medio del agua y la tierra."
 
-    def comer(self):
-        super().comer()

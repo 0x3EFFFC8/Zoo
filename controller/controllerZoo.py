@@ -1,17 +1,22 @@
-import view.viewZologico
-import model.Zoologico
-import model.Habitat
-import model.Animal
+import view.viewZologico as viewZoo
+import model.Zoologico as ZoologicoM
+import model.Habitat as HabitatM
+import model.Animal as AnimalM
+import model.Alimento as AlimientoC
 import model.Volador
 import model.Acuatico
 import model.SemiAcuatico
 import model.Terrestre
+import model.Alimento
+
+import streamlit as st
 class controllerZoo:
-    def __init__(self, zooA:model.Zoologico,temAnimal:model.Animal,temHabitat:model.Habitat,viewZoo:view.viewZologico):
-        self._Zoologico = zooA
-        self.temAnimal = temAnimal
-        self.temHabitat = temHabitat
-        self._viewZologico = viewZoo
+    def __init__(self):
+        self._ZoologicoC = ZoologicoM.Zoologico("ZOOLOGICO DE CALI")
+        self.temAnimal = None
+        self.temHabitat = None
+        self._viewZologico = viewZoo.viewZoologico()
+        self._alimientosZ = AlimientoC.Alimento()
         self._dicTipoH = {1:"Selvatico" , 2:"Bosque", 3: "Desertico",4: "Oceanico",5:"Polar",6: "Manglar",7:"Montañoso",8:"Tropical" ,9:"Sabana"}
         self._dicAdecuacion = {1:"Terrestre" , 2:"Acuatico", 3: "SemiAcuatico",4: "Volador"}
 
@@ -68,29 +73,52 @@ class controllerZoo:
         else:
             resU = "Error: "
             print(resU, error)
+    def eliminarHabitat(self):
+        # Mostrar Habitats
+        resU = ""
+        error = ""
+        keyH = self.recibirOpcion(input("Ingrese Clave del Habitat"))
+        if type (keyH) == int:
+            resProceso = self._ZoologicoC.eliminarHabitat(keyH)
+            if resProceso != 1:
+                error = resProceso
+        else:
+            error = keyH
+        if error == "":
+            resU = "EL HABITAT "+ str(keyH) + ".\nFue eliminado del Zoologico con Exito"
+        else:
+            resU = "Error"
+
+    def subMenuBodega(self):
+        pass
+    def submenuHabitat(self):
+
+        sub_menuH = ["Agregar Animal al habitat", "Sacar Animal del Zoologico", "Mostrar Animales dentro del habitat", "Interactuar Animal"]
+        eleccionH = st.sidebar.selectbox("Seleccione una opción", sub_menuH)
+        # Mostrar contenido según la opción del submenú seleccionada
+        if eleccionH == "Agregar Animal al habitat":
+            st.write("Agregando")
+        elif eleccionH == "Mostrar Animales dentro del habitat":
+            pass
+        elif eleccionH == "Sacar Animal del Zoologico":
+            st.write("Contenido de la opción 2 de Opciones")
+        elif eleccionH == "Interactuar Animal":
+            st.write("Contenido de la opción 3 de Opciones")
+
     def menuZoo(self):
-        ban = True
-        while ban:
-            self._viewZologico.menuZoologico(self._Zoologico)
-            opc = self.recibirOpcion(input())
-            if type(opc) == int:
-                self._viewZologico.mostrarTituloMenuP(opc)
-                if opc == 0:
-                    ban = False
-                elif opc == 1:
-                    self._viewZologico.mostrarHabitats(self._Zoologico)
-                elif opc == 2:
-                    self.crearHabitat()
-                elif opc == 3:
-                    pass
-                elif opc == 4:
-                    pass
-                elif opc == 5:
-                    pass
-                else:
-                    print("Obcion Invalidad")
-            else:
-                print("Se ha Generado un Error: ", opc)
+        menu = ["Ver Mapa Zoologico", "Crear Habitat", "Ver Habitat", "Eliminar Habitat del Zoologico", "Bodega"]
+        eleccionMenu = st.sidebar.selectbox("Seleccione una opción", menu)
+
+        if eleccionMenu == "Ver Mapa Zoologico":
+            st.write("Contenido de la opción Inicio")
+        elif eleccionMenu == "Crear Habitat":
+            pass
+        elif eleccionMenu == "Ver Habitat":
+            pass
+        elif eleccionMenu == "Eliminar Habitat del Zoologico":
+            pass
+        elif eleccionMenu == "Bodega":
+            pass
 
 
 

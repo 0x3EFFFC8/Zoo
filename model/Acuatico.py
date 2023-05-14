@@ -22,7 +22,3 @@ class Acuatico(Animal):
         else:
             self._boolJuego = False
             return "Esta Cansado, esta nadando lento."
-
-
-    def comer(self):
-        super().comer()

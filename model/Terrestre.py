@@ -22,7 +22,3 @@ class Terrestre(Animal):
             self._boolJuego = False
             return "Esta Cansado de Jugar, se fue a descansar."
 
-
-    def comer(self):
-        super().comer()
-

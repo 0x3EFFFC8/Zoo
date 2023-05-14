@@ -183,7 +183,7 @@ class viewZoologico:
         print("[2] Herbivoros")
         print("[3] Omnivoros")
         print("[*] Ingrese la opcion deseada: ")
-
+    """
     def printAlimentos(self, ocpT, ocpD,alimento):
 
         if ocpT == 1 and ocpD == 1:
@@ -225,7 +225,7 @@ class viewZoologico:
         elif ocpT == 4 and ocpD == 3:
              for i, j in zip(alimento.voladorC, alimento.voladorH):
                 print(f"{voladorC:<10} {voladorH}")
-
+    """
 
 
 

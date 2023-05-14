@@ -1,5 +1,5 @@
 from abc import ABC,abstractmethod 
-
+import Alimento
 class Animal(ABC):
     def __init__(self, idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ,tem:tuple):
         self._idAnimal = idAnimal
@@ -76,37 +76,36 @@ class Animal(ABC):
     def jugar(self):
         pass
 
-    def Comer(self, alimentos, alimento):
+    def Comer(self, alimentos : Alimento, alimento):
     
-        if _tipoDieta == 1:
+        if self._tipoDieta == 1:
             
-            if(alimentos.verificarCarnivoros(alimento,._idAdaptacion))
-                alimentos.deleteAlimentoC(alimento,._idAdaptacion)
+            if alimentos.verificarCarnivoros(alimento, self._idAdaptacion):
+                alimentos.deleteAlimentoC(alimento, self._idAdaptacion)
                 print("Comiendo {alimento}...\n")
 
-            else
+            else:
                 print("El alimento {alimento}, no se encuentra\n")
                 
-        elif _tipoDieta == 2:
+        elif self._tipoDieta == 2:
 
-            if(alimentos.verificarHerbivoros(alimento,._idAdaptacion))
-                alimentos.deleteAlimentoH(alimento,._idAdaptacion)
+            if alimentos.verificarHerbivoros(alimento, self._idAdaptacion):
+                alimentos.deleteAlimentoH(alimento, self._idAdaptacion)
                 print("Comiendo {alimento}...\n")
 
-            else
+            else:
                 print("El alimento {alimento}, no se encuentra\n")
 
-        elif _tipoDieta == 3:
+        elif self._tipoDieta == 3:
 
-            
-            if(alimentos.verificarCarnivoros(alimento,._idAdaptacion))
-                alimentos.deleteAlimentoC(alimento,._idAdaptacion)
+            if alimentos.verificarCarnivoros(alimento, self._idAdaptacion):
+                alimentos.deleteAlimentoC(alimento, self._idAdaptacion)
                 print("Comiendo {alimento}...\n")
 
-            elif(alimentos.verificarHerbivoros(alimento,._idAdaptacion))
-                alimentos.deleteAlimentoH(alimento,._idAdaptacion)
+            elif alimentos.verificarHerbivoros(alimento,self._idAdaptacion):
+                alimentos.deleteAlimentoH(alimento,self._idAdaptacion)
                 print("Comiendo {alimento}...\n")
-             else
+            else:
                 print("El alimento {alimento}, no se encuentra\n")
 
 

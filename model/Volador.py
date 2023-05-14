@@ -21,6 +21,3 @@ class Volador(Animal):
         else:
             self._boolJuego = False
             return "Esta Cansado de jugar esta posado en su lugar favorito."
-
-    def comer(self):
-        super().comer()

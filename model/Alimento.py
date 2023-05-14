@@ -1,15 +1,14 @@
 class Alimento:
     def __init__(self):
 
-        self.terrestresC = set()
-        self.terrestresH = set()
-        self.acuaticoC = set()
-        self.acuaticoH = set()
-        self.semiAcuaticoC = set()
-        self.semiAcuaticoH = set()
-        self.voladorC = set()
-        self.voladorH = set()
-    
+        self.terrestresC = set("pollo crudo")
+        self.terrestresH = set("lechuga")
+        self.acuaticoC = set("sardinas")
+        self.acuaticoH = set("plangton")
+        self.semiAcuaticoC = set("ratones")
+        self.semiAcuaticoH = set("zanahoria")
+        self.voladorC = set("pollo crudo")
+        self.voladorH = set("semillas de girasol")
     def addCarnivoros(self, alimento, tipoAnimal):
         if tipoAnimal == 1:
             self.terrestresC.add(alimento)
@@ -40,7 +39,7 @@ class Alimento:
         elif tipoAnimal == 4:
             return alimento in self.voladorC
     
-    def verificarHerbivoros(self, nombre, tipoAnimal):
+    def verificarHerbivoros(self, alimento, tipoAnimal):
         if tipoAnimal == 1:
             return alimento in self.terrestresH
         elif tipoAnimal == 2:
@@ -71,29 +70,28 @@ class Alimento:
             self.voladorH.discard(alimento)
 
     def editAlimentoC(self, alimento_old, alimento_new, tipo_animal, tipoDieta):
+        resulProceso = None
         if tipoDieta == 1:
-
             if tipo_animal == 1:
-
                 if alimento_old in self.terrestresC:
                     self.terrestresC.discard(alimento_old)
                     self.terrestresC.add(alimento_new)
+
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para carnívoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para carnívoros."
             if tipo_animal == 2:
 
                 if alimento_old in self.terrestresC:
                     self.auaticoC.discard(alimento_old)
                     self.acuaticoC.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para carnívoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para carnívoros."
             if tipo_animal == 3:
-
                 if alimento_old in self.terrestresC:
                     self.semiAcuaticoC.discard(alimento_old)
                     self.semiAcuaticoC.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para carnívoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para carnívoros."
         
             if tipo_animal == 4:
 
@@ -101,7 +99,7 @@ class Alimento:
                     self.voladorC.discard(alimento_old)
                     self.voladorC.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para carnívoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para carnívoros."
 
         elif tipoDieta == 2:
             
@@ -111,44 +109,43 @@ class Alimento:
                     self.terrestresH.discard(alimento_old)
                     self.terrestresH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para herbívoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para herbívoros."
             if tipo_animal == 2:
 
                 if alimento_old in self.terrestresC:
                     self.auaticoH.discard(alimento_old)
                     self.acuaticoH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para herbívoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para herbívoros."
             if tipo_animal == 3:
 
                 if alimento_old in self.terrestresC:
                     self.semiAcuaticoH.discard(alimento_old)
                     self.semiAcuaticoH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para herbivoros.")
-        
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para herbivoros."
             if tipo_animal == 4:
 
                 if alimento_old in self.terrestresC:
                     self.voladorH.discard(alimento_old)
                     self.voladorH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos para herbivoros.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos para herbivoros."
 
-        else 
+        else:
             if tipo_animal == 1:
 
                 if alimento_old in self.terrestresC:
                     self.terrestresC.discard(alimento_old)
                     self.terrestresC.add(alimento_new)
 
-                elif  if alimento_old in self.terrestresH:
+                elif alimento_old in self.terrestresH:
                     self.terrestresH.discard(alimento_old)
                     self.terrestresH.add(alimento_new)
 
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos.")
-            if tipo_animal == 2:
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos."
+            elif tipo_animal == 2:
 
                 if alimento_old in self.acuaticoC:
                     self.acuaticoC.discard(alimento_old)
@@ -158,8 +155,8 @@ class Alimento:
                     self.acuaticoH.discard(alimento_old)
                     self.acuaticoH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos.")
-            if tipo_animal == 3:
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos."
+            elif tipo_animal == 3:
 
                 if alimento_old in self.semiAcuaticoC:
                     self.semiAcuaticoC.discard(alimento_old)
@@ -169,21 +166,20 @@ class Alimento:
                     self.semiAcuaticoH.discard(alimento_old)
                     self.semiAcuaticoH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos.")
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos."
         
-            if tipo_animal == 4:
+            elif tipo_animal == 4:
 
                 if alimento_old in self.voladorC:
                     self.voladorC.discard(alimento_old)
                     self.voladorC.add(alimento_new)
 
-                 if alimento_old in self.voladorH:
+                elif alimento_old in self.voladorH:
                     self.voladorH.discard(alimento_old)
                     self.voladorH.add(alimento_new)
                 else:
-                    print("El alimento no se encuentra en la lista de alimentos.")
-
-
-
-
+                    resulProceso = "El alimento no se encuentra en la lista de alimentos."
+        if type(resulProceso) != str:
+            resulProceso = 1
+        return resulProceso
 
