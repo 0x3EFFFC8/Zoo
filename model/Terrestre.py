@@ -1,7 +1,7 @@
-import Animal
-class Terrestre(Animal):
-    def __init__(self,idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ):
-        super().__init__(idAnimal,edad,tipoH,tipoHabi, nombreEspecie,nombre,tipoDieta,horasD )
+import model.Animal
+class Terrestre(model.Animal.Animal):
+    def __init__(self,idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int, temA:tuple ):
+        super().__init__(idAnimal,edad,tipoH,tipoHabi, nombreEspecie,nombre,tipoDieta,horasD,temA)
         self._adaptacion = "Terrestre"
         self._idAdaptacion = 1
 

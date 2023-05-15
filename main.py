@@ -4,7 +4,7 @@ import streamlit as st
 if __name__ == '__main__':
     st.set_page_config(
         page_title= "Titulo Zoo",
-        layout = "Wide"
+        layout = "wide"
     )
     program = controller.controllerZoo()
     program.menuZoo()

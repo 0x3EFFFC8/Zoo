@@ -1,15 +1,13 @@
 
 
-import Habitat
-import Animal
-
-
+import model.Habitat
+import model.Animal
 
 class Zoologico:
     def __init__(self,nombre:str):
         self.__nombreZ = nombre
-        self._mapaHabitats: dict[int,Habitat] = {}
-        self.__bodegaA: list[Animal] = []
+        self._mapaHabitats: dict[int,model.Habitat] = {}
+        self.__bodegaA: list[model.Animal] = []
         self.__totalH = 0
         self.__totalA = 0
         self.__creadorKeys = 0
@@ -49,7 +47,7 @@ class Zoologico:
             self.__totalH -=1
 
 
-    def agregarHabitat(self, newHabitat:Habitat):
+    def agregarHabitat(self, newHabitat:model.Habitat):
         try:
             self._mapaHabitats[self.getCreadorKeys()] = newHabitat
             if self.getCreadorKeys() in self._mapaHabitats == False:
@@ -120,7 +118,7 @@ class Zoologico:
         else:
             ban = indice
         return ban
-    def agregarAnimalH(self, animalB : Animal , idHabitat : int):
+    def agregarAnimalH(self, animalB : model.Animal , idHabitat : int):
         banHabitat = idHabitat in self._mapaHabitats
         banGeneral = 0
         if banHabitat:

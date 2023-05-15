@@ -2,6 +2,7 @@
 import model.Zoologico
 import model.Habitat
 import model.Animal
+import streamlit as st
 
 class viewZoologico:
     def __init__(self):
@@ -19,68 +20,56 @@ class viewZoologico:
 
 
 
-    def mostrarHabitats(self,zoologicoA : model.Zoologico):
-        mapa = zoologicoA.getMapa
-        if len(mapa) != 0:
-            print("El Zoologico Cuenta con ", zoologicoA.getTotalHZoo(), " Habitats actualmente.")
-            print("El Zoologico cuenta con", zoologicoA.getTotalAZoo(), " Animales actualmente.\n")
+    def mostrarHabitats(self,mapa:dict,totalA:int,totalH:int):
+        if totalH > 0:
+            st.write("El Zoologico Cuenta con " + str(totalH) +" Habitats actualmente.")
+            st.write("El Zoologico cuenta con"+ str(totalA) + " Animales actualmente.\n")
             for key, Habitat in mapa:
-                print("  Habitat con el Id: ", key)
-                print("      Tipo de Habitat: ", Habitat.getTipoH_Str())
-                print("      Tipo de Adecuacion: ", Habitat.getAdecuacion_Str())
-                print("      Dieta de los Animales: ", self.dicDieta[Habitat.getTipoDieta()])
-                print("      Cantidad Animales dentro del Habitat: ", Habitat.getCantidadAH())
-                print("      Tem Min = ", Habitat.getTuplaTemH()[0]," - Tem Max = ",Habitat.getTuplaTemH()[1], " Cº")
+                st.write("  Habitat con el Id: " + str(key))
+                st.write("      Tipo de Habitat: " + str(Habitat.getTipoH_Str()))
+                st.write("      Tipo de Adecuacion: " + str(Habitat.getAdecuacion_Str()))
+                st.write("      Dieta de los Animales: " + self.dicDieta[Habitat.getTipoDieta()])
+                st.write("      Cantidad Animales dentro del Habitat: "+ str(Habitat.getCantidadAH()))
+                st.write("      Tem Min = "+ str(Habitat.getTuplaTemH()[0])+" - Tem Max = "+str(Habitat.getTuplaTemH()[1])+ " Cº")
         else:
-            print("El Zoologico se encuentra vacio no hay habitats aun.")
+            st.markdown("<h1 style='text-align: center;'>Alerta</h1>", unsafe_allow_html=True)
+            st.warning("El Zoologico se encuentra vacio no hay habitats aun.")
 
     def mostrarAnimal( self,animal : model.Animal ):
 
-        print("    El animal con el id: ", animal.getIdAnimal())
-        print("      [*] Especie: ", animal.getNombreEspecie())
-        print("      [*] Nombre: ", animal.getNombreAnimal())
-        print("      [*] Edad: ", animal.getedad())
-        print("      [*] Tipo Adaptacion: ", animal.getTipoAdapA_str())
-        print("      [*] Tipo Habitat: ", animal.getTipoHabitad_str())
-        print("      [*] Tipo de Dieta: ", self.dicDieta[animal.getTipoDieta()])
-        print("      [*] Temperatura Min: ", animal.getTuplaTemA()[0], " Cº")
-        print("      [*] Temperatura Max: ", animal.getTuplaTemA()[1], " Cº")
+        st.write("    El animal con el id: "+ str(animal.getIdAnimal()))
+        st.write("      [*] Especie: "+ animal.getNombreEspecie())
+        st.write("      [*] Nombre: "+ animal.getNombreAnimal())
+        st.write("      [*] Edad: "+ str(animal.getedad()))
+        st.write("      [*] Tipo Adaptacion: "+ animal.getTipoAdapA_str())
+        st.write("      [*] Tipo Habitat: "+ animal.getTipoHabitad_str())
+        st.write("      [*] Tipo de Dieta: "+ self.dicDieta[animal.getTipoDieta()])
+        st.write("      [*] Temperatura Min: "+ str(animal.getTuplaTemA()[0])+ " Cº")
+        st.write("      [*] Temperatura Max: "+ str(animal.getTuplaTemA()[1])+ " Cº")
 
-    def mostrarAnimalesHabitat(self,habitatH : model.Habitat,  keyH:int):
-        Habitat = habitatH
-        print("En este Habitat con el clave ", keyH, ", con una adecuacion de tipo ", Habitat.getAdecuacion_Str(), " y una dieta ", self.dicDieta[Habitat.getTipoDieta()] )
-        print("Que posee una temperatura entre los ",Habitat.getTuplaTemH()[0]," - ",Habitat.getTuplaTemH()[1], " Cº")
-        vectorH = habitatH.getVectorAH()
-        i = 0
-        while i < len(vectorH):
-            self.mostrarAnimal(vectorH[i])
-            i+=1
-
-    def panelAdecuacion(self):
-
-        print("[1] Terrestres")
-        print("[2] Acuaticos")
-        print("[3] SemiAcuatico")
-        print("[4] Volador")
-        print("Elija una de esas opciones: ")
-
-    def panelDieta(self):
-        print("[1] Carnivoro")
-        print("[2] Herbiboro")
-        print("[3] Omniboro")
-        print("Elija una de esas opciones: ")
-
-    def panelTipoHabitat(self):
-        print("[1] Selvatico")
-        print("[2] Bosque")
-        print("[3] Desertico")
-        print("[4] Oceanico")
-        print("[5] Polar")
-        print("[6] Manglar")
-        print("[7] Montañoso")
-        print("[8] Tropical")
-        print("[9] Sabana")
-        print("Elija una de esas opciones: ")
+    def mostrarAnimalesHabitat(self,habitatH : model.Habitat.Habitat,  keyH:int):
+        if habitatH.getCantidadAH() > 0 :
+            st.write("En este Habitat con el clave "+ str(keyH)+ ", con una adecuacion de tipo "+ habitatH.getAdecuacion_Str()+ " y una dieta "+ self.dicDieta[habitatH.getTipoDieta()])
+            st.write("Que posee una temperatura entre los "+str(habitatH.getTuplaTemH()[0])+" - "+str(habitatH.getTuplaTemH()[1])+ " Cº")
+            vectorH = habitatH.getVectorAH()
+            i = 0
+            while i < len(vectorH):
+                self.mostrarAnimal(vectorH[i])
+                i+=1
+        else:
+            st.markdown("<h1 style='text-align: center;'>Alerta</h1>", unsafe_allow_html=True)
+            st.warning("No Hay Animales en Habitat.")
+    def paneles(self, columnas):
+        with columnas[0]:
+            optionsA = {"Terrestres": 1,"Acuaticos ": 2,"SemiAcuaticos": 3,"Volador":4}
+            panel1 = st.radio("Selecciona una opción", list(optionsA.keys()))
+            optionsD = {"Carnivoro": 1, "Herbivoro": 2, "Omnivoro": 3}
+            panel2 = st.radio("Selecciona una opción", list(optionsD.keys()))
+        with columnas[1]:
+            optionsH = {"Selvatico":1,"Bosque":2,"Desertico":3,"Ocenico":4,
+                    "Polar":5,"Manglar":6,"Montañoso":7,"Tropical":8,"Sabana":9}
+            panel3 = st.radio("Selecciona una opción", list(optionsH.keys()))
+        return [optionsA[panel1],optionsD[panel2],optionsH[panel3]]
 
     def subMenuHabitat(self,habitat:model.Habitat,idH:int):
         print("*** |  Bienvenido al Habitat ",idH ," ", habitat.getTipoH_Str()," | ***")

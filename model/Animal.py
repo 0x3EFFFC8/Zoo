@@ -1,5 +1,5 @@
 from abc import ABC,abstractmethod 
-import Alimento
+import model.Alimento
 class Animal(ABC):
     def __init__(self, idAnimal:int,edad:int,tipoH:int,tipoHabi:str, nombreEspecie:str,nombre:str,tipoDieta:int,horasD:int ,tem:tuple):
         self._idAnimal = idAnimal
@@ -76,7 +76,7 @@ class Animal(ABC):
     def jugar(self):
         pass
 
-    def Comer(self, alimentos : Alimento, alimento):
+    def Comer(self, alimentos : model.Alimento, alimento):
     
         if self._tipoDieta == 1:
             

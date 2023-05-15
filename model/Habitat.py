@@ -1,5 +1,4 @@
-import Animal
-
+import model.Animal
 class Habitat:
     def __init__(self, tipoH:str, id_tipo_h : int, tipo_dieta_ah:int, strTipoAdecuacionH:str, tipo_adecu_s:int, temperatura: tuple[int,int]):
         self.__tipoHabitad = tipoH # string
@@ -45,7 +44,7 @@ class Habitat:
         else:
             self.__cantidadAnimalesH -= 1
 
-    def agregarAnimalH(self, newAniamal:Animal ):
+    def agregarAnimalH(self, newAniamal:model.Animal ):
         resFuncion = None
         Animal = newAniamal
         if Animal.getIdTipoHA() == self.getIdTipoH():
