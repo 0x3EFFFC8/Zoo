@@ -3,8 +3,9 @@ import streamlit as st
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     st.set_page_config(
-        page_title= "Titulo Zoo",
-        layout = "wide"
+        page_title= "Zoo Cali",
+        layout = "wide" ,
+        page_icon= "👙"
     )
     program = controller.controllerZoo()
     program.menuZoo()

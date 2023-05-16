@@ -2,6 +2,7 @@
 
 import model.Habitat
 import model.Animal
+import streamlit as st
 
 class Zoologico:
     def __init__(self,nombre:str):
@@ -10,8 +11,8 @@ class Zoologico:
         self.__bodegaA: list[model.Animal] = []
         self.__totalH = 0
         self.__totalA = 0
-        self.__creadorKeys = 0
-        self.__creadorIds = 0
+        self.__creadorKeys = 1
+        self.__creadorIds = 1
     def getNombre(self):
         return self.__nombreZ
     def getCreadorId(self):
@@ -45,8 +46,6 @@ class Zoologico:
             self.__totalH +=1
         else:
             self.__totalH -=1
-
-
     def agregarHabitat(self, newHabitat:model.Habitat):
         try:
             self._mapaHabitats[self.getCreadorKeys()] = newHabitat
@@ -61,22 +60,21 @@ class Zoologico:
             return e.args # si el proceso falla
 
     def eliminarHabitat(self, keyBusqueda:int):
-
-        if keyBusqueda in self._mapaHabitats == True:
-            Habitat = self._mapaHabitats[keyBusqueda]
-            if Habitat.getCantidadAH() == 0 :
+        res = keyBusqueda in self._mapaHabitats
+        if res == True:
+            temHabitat: model.Habitat.Habitat = self._mapaHabitats[keyBusqueda]
+            if temHabitat.getCantidadAH() == 0:
                 del self._mapaHabitats[keyBusqueda]
                 self.setTotalHZoo(-1)
                 return 1 # Encontro Habitat y esta vacio eliminación, se llevo a cabo la eliminacion
             else:
                 return "Hay Animales en el Habitat.\nNo Es Posible Eliminar"
-        return "No se encontro el habitat en el Zoologico"
-
+        else:
+            return "No se encontro el habitat en el Zoologico"
     def agregarAnimalBodega(self, newAnimal:int):
         self.__bodegaA.append(newAnimal)
         self.setTotalAZoo(1)
-
-
+        return 1
     def animalEnBodega(self,idA):
         indice = 0
         tamBodega = len(self.__bodegaA)
@@ -95,7 +93,6 @@ class Zoologico:
         else:
             return "No Hay animales en la Bodega"
     def sacarAnimalBodega(self, idAnimal:int):
-
         indice = self.animalEnBodega(idAnimal)
         if indice >=0:
             return self.__bodegaA.pop(indice)

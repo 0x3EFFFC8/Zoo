@@ -20,17 +20,17 @@ class viewZoologico:
 
 
 
-    def mostrarHabitats(self,mapa:dict,totalA:int,totalH:int):
+    def mostrarHabitats(self,mapa:dict[int,model.Habitat.Habitat],totalA:int,totalH:int):
         if totalH > 0:
-            st.write("El Zoologico Cuenta con " + str(totalH) +" Habitats actualmente.")
-            st.write("El Zoologico cuenta con"+ str(totalA) + " Animales actualmente.\n")
-            for key, Habitat in mapa:
-                st.write("  Habitat con el Id: " + str(key))
-                st.write("      Tipo de Habitat: " + str(Habitat.getTipoH_Str()))
-                st.write("      Tipo de Adecuacion: " + str(Habitat.getAdecuacion_Str()))
-                st.write("      Dieta de los Animales: " + self.dicDieta[Habitat.getTipoDieta()])
-                st.write("      Cantidad Animales dentro del Habitat: "+ str(Habitat.getCantidadAH()))
-                st.write("      Tem Min = "+ str(Habitat.getTuplaTemH()[0])+" - Tem Max = "+str(Habitat.getTuplaTemH()[1])+ " Cº")
+            st.title("El Zoologico Cuenta con " + str(totalH) +" Habitats actualmente.")
+            st.title("El Zoologico cuenta con "+ str(totalA) + " Animales actualmente.\n")
+            for key in mapa:
+                st.write(" ----- Habitat con el Id: " + str(key))
+                st.write(" ------- Tipo de Habitat: " + str(mapa[key].getTipoH_Str()))
+                st.write(" ------- Tipo de Adecuacion: " + str(mapa[key].getAdecuacion_Str()))
+                st.write(" ------- Dieta de los Animales: " + str(self.dicDieta[mapa[key].getTipoDieta()]))
+                st.write(" ------- Cantidad Animales dentro del Habitat: "+ str(mapa[key].getCantidadAH()))
+                st.write(" ------- Tem Min = "+ str(mapa[key].getTuplaTemH()[0])+" - Tem Max = "+str(mapa[key].getTuplaTemH()[1])+ " Cº")
         else:
             st.markdown("<h1 style='text-align: center;'>Alerta</h1>", unsafe_allow_html=True)
             st.warning("El Zoologico se encuentra vacio no hay habitats aun.")
@@ -61,25 +61,15 @@ class viewZoologico:
             st.warning("No Hay Animales en Habitat.")
     def paneles(self, columnas):
         with columnas[0]:
-            optionsA = {"Terrestres": 1,"Acuaticos ": 2,"SemiAcuaticos": 3,"Volador":4}
-            panel1 = st.radio("Selecciona una opción", list(optionsA.keys()))
+            optionsA = {"Terrestre": 1,"Acuatico": 2,"SemiAcuatico": 3,"Volador":4}
+            panel1 = st.radio("Selecciona el tipo de Adecuacion:", list(optionsA.keys()))
             optionsD = {"Carnivoro": 1, "Herbivoro": 2, "Omnivoro": 3}
-            panel2 = st.radio("Selecciona una opción", list(optionsD.keys()))
+            panel2 = st.radio("Selecciona el tipo de Dieta", list(optionsD.keys()))
         with columnas[1]:
             optionsH = {"Selvatico":1,"Bosque":2,"Desertico":3,"Ocenico":4,
                     "Polar":5,"Manglar":6,"Montañoso":7,"Tropical":8,"Sabana":9}
-            panel3 = st.radio("Selecciona una opción", list(optionsH.keys()))
+            panel3 = st.radio("Selecciona el Tipo de Habitat: ", list(optionsH.keys()))
         return [optionsA[panel1],optionsD[panel2],optionsH[panel3]]
-
-    def subMenuHabitat(self,habitat:model.Habitat,idH:int):
-        print("*** |  Bienvenido al Habitat ",idH ," ", habitat.getTipoH_Str()," | ***")
-        print("** |   Adecuado para especies de tipo ",habitat.getAdecuacion_Str())
-        print("[1] Agregar Animal al habitat")
-        print("[2] Sacar Animal del Zoologico")
-        print("[3] Mostrar Animales dentro del habitat ")
-        print("[4] Interactuar Animal ")
-        print("[0] Salir del habitat \n")
-        print("Ingrese la obcion deseada: ")
 
 
     def menuInteracciones(self,animalh:model.Animal):
