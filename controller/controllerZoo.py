@@ -51,8 +51,7 @@ class controllerZoo:
             resU = "Error"
 
     """
-    def tieneNumeros(string):
-        return any(char.isdigit() for char in string)
+
     def panelCrearAnimalHabitat(self, habitatAde,habitatDie,habitatTipo):
         tuplaT = None
         nombre = None
@@ -84,7 +83,7 @@ class controllerZoo:
             if tuplaT != None and envio == True:
                 nombre = nombre.lower()
                 especie = especie.lower()
-                temAnimal: AnimalM = None
+                temAnimal: AnimalM.Animal = None
                 if habitatAde == 1:
                     temAnimal = TerrestreM.Terrestre(self._ZoologicoC.getCreadorId(), edad, habitatTipo,
                                                      self._dicTipoH[habitatTipo], especie, nombre, habitatDie,
@@ -101,6 +100,7 @@ class controllerZoo:
                     temAnimal = VoladorM.Volador(self._ZoologicoC.getCreadorId(), edad, habitatTipo,
                                                      self._dicTipoH[habitatTipo], especie, nombre, habitatDie,
                                                      horasS,tuplaT)
+                self._ZoologicoC.modiCreadorId()
                 return temAnimal
             else:
                 return None
@@ -155,6 +155,7 @@ class controllerZoo:
                     temAnimal = VoladorM.Volador(self._ZoologicoC.getCreadorId(), edad, listaInfo[2],
                                                       self._dicTipoH[listaInfo[2]], especie, nombre, listaInfo[1],
                                                     horasS, tuplaT)
+                self._ZoologicoC.modiCreadorId()
                 return temAnimal
             else:
                 return None
@@ -162,15 +163,16 @@ class controllerZoo:
             contenedor = st.container()
             with contenedor:
                 st.title("*** |  Bienvenido al Habitat "+ str(keyH)+ " " + habitatI.getTipoH_Str()+ " | ***")
-                st.title("** |   Adecuado para especies de tipo " + habitatI.getAdecuacion_Str())
+                st.title("** |   Adecuado para especies de tipo " + habitatI.getAdecuacion_Str()  +" con una dieta "+ self._viewZologico.dicDieta[habitatI.getTipoDieta()])
             sub_menuH = ["Agregar Animal al habitat", "Sacar Animal del Zoologico", "Mostrar Animales dentro del habitat", "Interactuar Animal"]
             eleccionH = st.sidebar.selectbox("Selecciona una opción", sub_menuH)
             # Crear el submenú horizontal
             if eleccionH == "Agregar Animal al habitat":
                 ingresoAnimal = self.panelCrearAnimalHabitat(habitatI.getTipoAdecuacion(),habitatI.getTipoDieta(),habitatI.getIdTipoH())
-                if type(ingresoAnimal) == AnimalM.Animal:
+                if ingresoAnimal != None:
                     resIngre = habitatI.agregarAnimalH(ingresoAnimal)
                     if resIngre == 1:
+                        self._ZoologicoC.setTotalAZoo(1)
                         st.session_state["Zoologico"] = self._ZoologicoC
                         st.success("Animal Ingresado Correctamente en el Habitat")
                     else:
@@ -197,9 +199,72 @@ class controllerZoo:
                 else:
                     st.error(resIngre)
         elif eleccionB == "Eliminar Animal":
-            pass
+            if len(self._ZoologicoC.getBodega()) > 0:
+                idAnimal = None
+                dicInversoA = {}
+                bodega: list[AnimalM.Animal] = self._ZoologicoC.getBodega()
+                for animalE in bodega:
+                    tuplaTa = animalE.getTuplaTemA()
+                    newValA = animalE.getIdAnimal()
+                    newClaveA = animalE.getNombreEspecie() + " - " + animalE.getTipoAdapA_str() + " - " + animalE.getTipoHabitad_str()  + " - Tem[" + str(tuplaTa[0]) + "/" + str(tuplaTa[1]) + "]"
+                    dicInversoA[newClaveA] = newValA
+
+                cajaAnimalesB = st.selectbox("Elige un Animal: ", list(dicInversoA.keys()))
+                idAnimal = dicInversoA[cajaAnimalesB]
+                botonAB = st.button("Sacar de Bodega")
+                if botonAB == True:
+                    resProceso = self._ZoologicoC.eliminarAnimalBodega(idAnimal)
+                    if resProceso == 1:
+                        st.session_state["Zoologico"] = self._ZoologicoC
+                        st.success("Eliminado con Exito")
+                    else:
+                        st.error(resProceso)
+                else:
+                    st.session_state["Zoologico"] = self._ZoologicoC
         elif eleccionB == "Mover a Habitat":
-            pass
+            col = st.columns(2)
+            if self._ZoologicoC.getTotalHZoo() > 0 and self._ZoologicoC.getTotalAZoo() > 0:
+                idAnimalM = None
+                keyHabitatB = None
+                with col[0]:
+                    dicInversoA = {}
+                    bodega : list[AnimalM.Animal] = self._ZoologicoC.getBodega()
+                    for animal in bodega:
+                        tuplaTa = animal.getTuplaTemA()
+                        newValA = animal.getIdAnimal()
+                        newClaveA = animal.getNombreEspecie() + " - " + animal.getTipoAdapA_str() + " - " + animal.getTipoHabitad_str() + " - Tem[" + str(tuplaTa[0]) + "/" + str(tuplaTa[1]) + "]"
+                        dicInversoA[newClaveA] = newValA
+                    cajaAnimalesBM = st.selectbox("Elige un Animal: ", list(dicInversoA.keys()))
+                    idAnimalM = dicInversoA[cajaAnimalesBM]
+
+                with col[1]:
+                    dicInverso = {} # clave string "key - adecuacion - tem" y su valor sera la key "Entero"
+                    mapa = self._ZoologicoC.getMapa()
+                    for key in mapa:
+                        temH: HabitatM.Habitat = mapa[key]
+                        tuplaH = temH.getTuplaTemH()
+                        newClave = str(key) + " - " + temH.getAdecuacion_Str() + " - " + temH.getTipoH_Str() + " - Tem["+ str(tuplaH[0]) + "/" + str(tuplaH[1])+"]"
+                        dicInverso[newClave] = key
+                    cajaHabitats = st.selectbox("Elige una Habitat: ", list(dicInverso.keys()))
+                    keyHabitatB = dicInverso[cajaHabitats] # Key del habitat en el zoo
+                botonAB = st.button("Mover")
+                if botonAB == True:
+                    animalB: AnimalM.Animal = self._ZoologicoC.sacarAnimalBodega(idAnimalM)
+                    if type(animalB) != str:
+                        resProcesoIngreso = self._ZoologicoC.agregarAnimalH(animalB, keyHabitatB)
+                        if resProcesoIngreso == 1:
+                            st.success("Animal Ingresado en el Habitat con el Id " +str(keyHabitatB) + ".")
+                            st.success("Correctamente.")
+                            st.session_state["Zoologico"] = self._ZoologicoC
+                        else:
+                            st.session_state["Zoologico"] = self._ZoologicoC
+                            st.error(resProcesoIngreso)
+                    else:
+                        st.session_state["Zoologico"] = self._ZoologicoC
+                        st.error(animalB)
+                else:
+                    st.session_state["Zoologico"] = self._ZoologicoC
+
         elif eleccionB == "Mostrar Bodega":
             pass
     def menuZoo(self):

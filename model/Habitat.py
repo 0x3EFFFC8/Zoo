@@ -82,7 +82,6 @@ class Habitat:
 
         if resFuncion == 1:
             self.setCantidadAH(1)
-
         return resFuncion
 
     def buscarEnHabitat(self, idA:int ):

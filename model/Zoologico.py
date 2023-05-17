@@ -89,39 +89,40 @@ class Zoologico:
                     indice+=1
             if ban == False:
                 return "No se encontro Animal en la Bodega"
-
         else:
             return "No Hay animales en la Bodega"
     def sacarAnimalBodega(self, idAnimal:int):
         indice = self.animalEnBodega(idAnimal)
         if indice >=0:
-            return self.__bodegaA.pop(indice)
+            guardaA:model.Animal.Animal = self.__bodegaA[indice]
+            self.__bodegaA.pop(indice)
+            return guardaA
         else:
-            return None
+            return indice
     def eliminarAnimalBodega(self, idAnimal: int):
         indice = self.animalEnBodega(idAnimal)
         ban = None
         if indice>=0:
             try:
                 del self.__bodegaA[indice]
-                if self.animalEnBodega(idAnimal) == -1:
+                if type(self.animalEnBodega(idAnimal)) == str:
                     self.setTotalAZoo(-1)
-                    ban = 1 # procesoExitoso
+                    # procesoExitoso
+                    return 1
                 else:
                     raise SystemError("Eliminar en Bodega")
 
             except SystemError as e:
-                return e.args # retorna el error
+                ban =  e.args # retorna el error
         else:
             ban = indice
         return ban
-    def agregarAnimalH(self, animalB : model.Animal , idHabitat : int):
+    def agregarAnimalH(self, animalB : model.Animal.Animal , idHabitat : int):
         banHabitat = idHabitat in self._mapaHabitats
         banGeneral = 0
         if banHabitat:
             banIngreso = self._mapaHabitats[idHabitat].agregarAnimalH(animalB)
             if banIngreso == 1:
-                self._mapaHabitats[idHabitat].setCantidadAH(1)
                 banGeneral = 1
             else:
                 banGeneral = banIngreso
