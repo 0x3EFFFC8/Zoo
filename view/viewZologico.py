@@ -7,18 +7,6 @@ import streamlit as st
 class viewZoologico:
     def __init__(self):
         self.dicDieta = {1:"Carnivora" , 2:"Herbibora", 3: "Omnivora"}
-    def menuZoologico(self, zoologicoA:model.Zoologico):
-
-        print("*** | Bienvenido al Zoologico ", zoologicoA.getNombre," | **\n")
-        print("[1] Ver mapa Zoologico ")
-        print("[2] Crear habitat ")
-        print("[3] Ver Habitat ")
-        print("[4] Eliminar Habitad del Zoologico.")
-        print("[5] Bodega")
-        print("[0] Salir del Zoologico \n")
-        print ("Ingrese la obcion deseada: ")
-
-
 
     def mostrarHabitats(self,mapa:dict[int,model.Habitat.Habitat],totalA:int,totalH:int):
         if totalH > 0:
@@ -36,16 +24,21 @@ class viewZoologico:
             st.warning("El Zoologico se encuentra vacio no hay habitats aun.")
 
     def mostrarAnimal( self,animal : model.Animal ):
-
-        st.write("    El animal con el id: "+ str(animal.getIdAnimal()))
-        st.write("      [*] Especie: "+ animal.getNombreEspecie())
-        st.write("      [*] Nombre: "+ animal.getNombreAnimal())
-        st.write("      [*] Edad: "+ str(animal.getedad()))
-        st.write("      [*] Tipo Adaptacion: "+ animal.getTipoAdapA_str())
-        st.write("      [*] Tipo Habitat: "+ animal.getTipoHabitad_str())
-        st.write("      [*] Tipo de Dieta: "+ self.dicDieta[animal.getTipoDieta()])
-        st.write("      [*] Temperatura Min: "+ str(animal.getTuplaTemA()[0])+ " Cº")
-        st.write("      [*] Temperatura Max: "+ str(animal.getTuplaTemA()[1])+ " Cº")
+        columnas = st.columns(2)
+        with columnas[0]:
+            st.write("   El animal con el id: " + str(animal.getIdAnimal()))
+            st.write("      _[*] Especie: "+ animal.getNombreEspecie())
+            st.write("      _[*] Nombre: "+ animal.getNombreAnimal())
+            st.write("      _[*] Edad: "+ str(animal.getedad()))
+            st.write("      _[*] Tipo Adaptacion: "+ animal.getTipoAdapA_str())
+        with columnas[1]:
+            st.write("")
+            st.write("")
+            st.write("")
+            st.write("      [*] Tipo Habitat: "+ animal.getTipoHabitad_str())
+            st.write("      [*] Tipo de Dieta: "+ self.dicDieta[animal.getTipoDieta()])
+            st.write("      [*] Temperatura Min: "+ str(animal.getTuplaTemA()[0])+ " Cº")
+            st.write("      [*] Temperatura Max: "+ str(animal.getTuplaTemA()[1])+ " Cº")
 
     def mostrarAnimalesHabitat(self,habitatH : model.Habitat.Habitat,  keyH:int):
         if habitatH.getCantidadAH() > 0 :
@@ -82,70 +75,15 @@ class viewZoologico:
         print("[3] Dormir")
         print("[0] Salir  \n")
         print("Ingrese la obcion deseada: ")
-    def mostrarTituloMenuP(self,opcS:int):
-        res = ""
-        if opcS == 1:
-            res = "[--] Mapa Zoologico [--]"
-        elif opcS == 2:
-            res = "[--] Creando Habitat [--]"
-        elif opcS == 3:
-            res = "[--] Dirigiendose al Habitat[--]"
-        elif opcS == 4:
-            res = "[--] Eliminar Habitat del Zoologico [--]"
-        elif opcS == 5:
-            res = "[--] Bodega del Zoologico [--]"
-        elif opcS == 0:
-            res = "[--] Saliendo [--]"
-        else:
-            res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
-        print(res)
-    def mostrarTitulosSubMenuH(self,opcH:int):
-        if opcH == 1:
-            res = "[--] Agregar Animal Habitat [--]"
-        elif opcH == 2:
-            res = "[--] Sacar Animal Zoologico [--]"
-        elif opcH == 3:
-            res = "[--] Cargando Animales [--]"
-        elif opcH == 4:
-            res = "[--] Hacercandose al Animal  [--]"
-        elif opcH == 0:
-            res = "[--] Saliendo del Habitat [--]"
-        else:
-            res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
-
-    def menuBodega(self):
-        print("*** |  Bienvenido ala Bodega del Zoologico | ***")
-        print("[1] Agregar Animal")
-        print("[2] Eliminar Animal ")
-        print("[3] Mover a Habitat")
-        print("[4] Mostrar Bodega ")
-        print("[0] Salir de la bodega \n")
-        print("Ingrese la obcion deseada: ")
-
-    def mostrarTitulosSubMenuB(self,opcH:int):
-        if opcH == 1:
-            res = "[--] Agregar Animal a la bodega [--]"
-        elif opcH == 2:
-            res = "[--] Sacar Animal de la bodega[--]"
-        elif opcH == 3:
-            res = "[--] Trasladar Animal [--]"
-        elif opcH == 4:
-            res = "[--] Mostrando Bodega [--]"
-        elif opcH == 0:
-            res = "[--] Saliendo del la bodega[--]"
-        else:
-            res = "OPCION INVALIDA INTENTELO NUEVAMENTE"
-
-    def mostrarBodega(self,bodega:list[model.Animal]):
+    def mostrarBodega(self,bodega:list[model.Animal.Animal]):
         tamB = len(bodega)
         if tamB == 0:
-            print("! Bodega Vacia ¡")
-            print("No hay Animales dentro de la bodega")
+            st.write("! Bodega Vacia ¡")
+            st.info("No hay Animales dentro de la bodega")
         else:
-            print("Animales en Bodega = ",tamB)
-            i = 0
-            while i < tamB:
-                self.mostrarAnimal(bodega[i])
+            st.title("Animales en Bodega = "+ str(tamB))
+            for animal in bodega:
+                self.mostrarAnimal(animal)
 
     def menuAlimentos(self):
 

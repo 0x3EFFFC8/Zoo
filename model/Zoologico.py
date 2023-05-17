@@ -71,10 +71,17 @@ class Zoologico:
                 return "Hay Animales en el Habitat.\nNo Es Posible Eliminar"
         else:
             return "No se encontro el habitat en el Zoologico"
-    def agregarAnimalBodega(self, newAnimal:int):
+    def agregarAnimalBodega(self, newAnimal: model.Animal.Animal):
+        tamAnte = len(self.__bodegaA)
         self.__bodegaA.append(newAnimal)
-        self.setTotalAZoo(1)
-        return 1
+        if tamAnte < len(self.__bodegaA):
+            if self.__bodegaA[tamAnte] == newAnimal:
+                self.setTotalAZoo(1)
+                return 1
+            else:
+               return "Ingreso Invalido no se guardo el correcto"
+        else:
+             return "No se Agrego correctamente"
     def animalEnBodega(self,idA):
         indice = 0
         tamBodega = len(self.__bodegaA)
