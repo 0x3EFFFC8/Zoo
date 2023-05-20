@@ -112,7 +112,7 @@ class Habitat:
             except SystemError as e:
                 return e.args
         else:
-            return None
+            return indice
     def eliminarAnimal(self,idA:int ):
         indice = self.buscarEnHabitat(idA)
         if indice >= 0:
