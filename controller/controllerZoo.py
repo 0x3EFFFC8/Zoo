@@ -121,7 +121,7 @@ class controllerZoo:
             edad = st.slider('Edad', 1, 27, 5)
             minT = st.slider('Temperatura Min', -20, 34, 10)
             maxT = st.slider('Temperatura Max', -19, 35, 25)
-            horasS = st.slider('Horas de Descanso del Animal', 1, 14, 7)
+            horasS = st.slider('Horas de Descanso del Animal', 1, 16, 7)
             if minT > maxT:
                 st.info("Valores invalidos")
             elif minT == maxT:
