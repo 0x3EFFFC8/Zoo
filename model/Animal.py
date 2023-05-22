@@ -59,7 +59,7 @@ class Animal(ABC):
     def dormir(self):
         if self._boolDormir == False:
             self._boolDormir = True
-            return "Esta muy cansado, va a dormir por " + str(self.gethorasDormir()) + "Horas."
+            return "Esta muy cansado, va a dormir por " + str(self.gethorasDormir()) + "Horas."        
         else:
             self.__boolDormir = False
             return "Esta muy activo, ya durmio sus "+ str(self.gethorasDormir()) + "Horas diarias."
@@ -79,34 +79,29 @@ class Animal(ABC):
     def Comer(self, alimentos : model.Alimento, alimento):
     
         if self._tipoDieta == 1:
-            
+
             if alimentos.verificarCarnivoros(alimento, self._idAdaptacion):
                 alimentos.deleteAlimentoC(alimento, self._idAdaptacion)
-                print("Comiendo {alimento}...\n")
-
-            else:
-                print("El alimento {alimento}, no se encuentra\n")
+                return "comiendo " + alimento
+            return "El "+alimento+" no esta disponible"
                 
         elif self._tipoDieta == 2:
 
             if alimentos.verificarHerbivoros(alimento, self._idAdaptacion):
                 alimentos.deleteAlimentoH(alimento, self._idAdaptacion)
-                print("Comiendo {alimento}...\n")
-
-            else:
-                print("El alimento {alimento}, no se encuentra\n")
+                return "comiendo " + alimento
+            return "El "+alimento+" no esta disponible"
 
         elif self._tipoDieta == 3:
 
             if alimentos.verificarCarnivoros(alimento, self._idAdaptacion):
                 alimentos.deleteAlimentoC(alimento, self._idAdaptacion)
-                print("Comiendo {alimento}...\n")
+                return "comiendo " + alimento
 
             elif alimentos.verificarHerbivoros(alimento,self._idAdaptacion):
                 alimentos.deleteAlimentoH(alimento,self._idAdaptacion)
-                print("Comiendo {alimento}...\n")
-            else:
-                print("El alimento {alimento}, no se encuentra\n")
+                return "comiendo " + alimento
+            return "El "+alimento+" no esta disponible"
 
 
 

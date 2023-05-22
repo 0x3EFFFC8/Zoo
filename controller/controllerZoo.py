@@ -2,12 +2,11 @@ import view.viewZologico as viewZoo
 import model.Zoologico as ZoologicoM
 import model.Habitat as HabitatM
 import model.Animal as AnimalM
-import model.Alimento as AlimientoC
 import model.Volador as VoladorM
 import model.Acuatico as AcuaticoM
 import model.SemiAcuatico as SemiAcuaticoM
 import model.Terrestre as TerrestreM
-import model.Alimento as AlimentoM
+import model.Alimento as AlimentoC
 
 import streamlit as st
 class controllerZoo:
@@ -17,11 +16,14 @@ class controllerZoo:
             self._ZoologicoC = st.session_state["Zoologico"]
         else:
             self._ZoologicoC = ZoologicoM.Zoologico("ZOOLOGICO DE CALI")
+        if "comida" in st.session_state:
+            self._AlimentoM = st.session_state["comida"]
+        else:
+            self._AlimentoM = AlimentoC.Alimento()
 
         self.temAnimal = None
         self.temHabitat = None
-        self._viewZologico = viewZoo.viewZoologico()
-        self._alimientosZ = AlimientoC.Alimento()
+        self._viewZoologico = viewZoo.viewZoologico()
         self._dicTipoH = {1:"Selvatico" , 2:"Bosque", 3: "Desertico",4: "Oceanico",5:"Polar",6: "Manglar",7:"Montañoso",8:"Tropical" ,9:"Sabana"}
         self._dicAdecuacion = {1:"Terrestre" , 2:"Acuatico", 3: "SemiAcuatico",4: "Volador"}
 
@@ -114,7 +116,7 @@ class controllerZoo:
             nombre = st.text_input('Nombre del animal: ')
         with columnas[1]:
             especie = st.text_input("Nombre especie:")
-        listaInfo = self._viewZologico.paneles(columnas)
+        listaInfo = self._viewZoologico.paneles(columnas)
         with columnas[2]:
             edad = st.slider('Edad', 1, 27, 5)
             minT = st.slider('Temperatura Min', -20, 34, 10)
@@ -162,7 +164,7 @@ class controllerZoo:
         contenedor = st.container()
         with contenedor:
             st.title("* |  Bienvenido al Habitat "+ str(keyH)+ " " + habitatI.getTipoH_Str()+ " | ***")
-            st.title("** |  Adecuado para especies de tipo " + habitatI.getAdecuacion_Str()  +" con una dieta "+ self._viewZologico.dicDieta[habitatI.getTipoDieta()])
+            st.title("** |  Adecuado para especies de tipo " + habitatI.getAdecuacion_Str()  +" con una dieta "+ self._viewZoologico.dicDieta[habitatI.getTipoDieta()])
             st.title("*** |  Temperatura del Habitat "+ str(habitatI.getTuplaTemH()[0])+"/" +str(habitatI.getTuplaTemH()[1])+" Cº")
         sub_menuH = ["Agregar Animal al habitat", "Sacar Animal del Zoologico", "Mostrar Animales dentro del habitat","Sacar Habitat a Bodega", "Interactuar Animal"]
         eleccionH = st.sidebar.selectbox("Selecciona una opción", sub_menuH)
@@ -179,7 +181,7 @@ class controllerZoo:
                 else:
                     st.error(resIngre)
         elif eleccionH == "Mostrar Animales dentro del habitat":
-            self._viewZologico.mostrarAnimalesHabitat(habitatI,keyH)
+            self._viewZoologico.mostrarAnimalesHabitat(habitatI,keyH)
         elif eleccionH == "Sacar Animal del Zoologico":
             if habitatI.getCantidadAH() > 0:
                 idAnimal = None
@@ -230,11 +232,41 @@ class controllerZoo:
                         else:
                             st.error(animalT)
 
-
-
         elif eleccionH == "Interactuar Animal":
-            st.write("Contenido de la opción 3 de Opciones")
+
+            id_input = st.text_input("Ingrese el ID del animal")
+            if st.button("Enviar ID"):
+                if int(id_input) < self._ZoologicoC.getCreadorId() and int(id_input) > 0:
+                    st.success("ID seleccionado.")
+                    idA = int(id_input)
+                    animal = habitatI.retornarAnimal(idA-1)
+
+                    # Crear las pestañas
+                    tabs = ["Comer", "Dormir", "Jugar"]
+                    active_tab = st.sidebar.radio("Opciones", tabs)
+
+                    if active_tab == "Comer":  # Pestaña Comer
+                        st.header("Comer")
+                        alimento = st.text_input("Ingrese el Alimento")
+                        if st.button("Enviar Comida", key="comer"):
+                            comer = animal.Comer(self._AlimentoM, alimento)
+                            st.write(comer)
+
+                    if active_tab == "Dormir":  # Pestaña Dormir
+                        st.header("Dormir")
+                        if st.button("Enviar Dormir", key="dormir"):
+                            dormir = animal.dormir()
+                            st.write(dormir)
+                    if active_tab == "Jugar":  # Pestaña Jugar
+                        st.header("Jugar")
+                        if st.button("Enviar Juego", key="jugar"):
+                            jugar = animal.jugar()
+                            st.write(jugar)
+                else:
+                    st.error("ID incorrecto")
+
         st.session_state["Zoologico"] = self._ZoologicoC
+
     def subMenuBodega(self):
         sub_menuT = ["Agregar Animal", "Eliminar Animal", "Mover a Habitat",
                      "Mostrar Bodega"]
@@ -322,21 +354,21 @@ class controllerZoo:
                 st.info("No Hay Animales en el Zoologico")
         elif eleccionB == "Mostrar Bodega":
             bodega = self._ZoologicoC.getBodega()
-            self._viewZologico.mostrarBodega(bodega)
+            self._viewZoologico.mostrarBodega(bodega)
         st.session_state["Zoologico"] = self._ZoologicoC
     def menuZoo(self):
         st.markdown(f"<h1 style='text-align: center; color: green;font-family: Times New Roman;margin-top: -50px;background-color: #d9f2c3;'>{self._ZoologicoC.getNombre()}</h1>", unsafe_allow_html=True)
-        menu = ["Ver Mapa Zoologico", "Crear Habitat", "Ver Habitat", "Eliminar Habitat del Zoologico", "Bodega", "API"]
+        menu = ["Ver Mapa Zoologico", "Crear Habitat", "Ver Habitat", "Eliminar Habitat del Zoologico", "Bodega", "Alimentos"]
         eleccionMenu = st.sidebar.selectbox("Seleccione una opción", menu)
         if eleccionMenu == "Ver Mapa Zoologico":
             mapa = self._ZoologicoC.getMapa()
             totalA = self._ZoologicoC.getTotalAZoo()
             totalH = self._ZoologicoC.getTotalHZoo()
-            self._viewZologico.mostrarHabitats(mapa,totalA,totalH)
+            self._viewZoologico.mostrarHabitats(mapa,totalA,totalH)
         elif eleccionMenu == "Crear Habitat":
             tuplaT = None
             columnas = st.columns(3)
-            listaInfo = self._viewZologico.paneles(columnas)
+            listaInfo = self._viewZoologico.paneles(columnas)
             with columnas[2]:
                 minT = st.slider('Temperatura Min ', -20, 34, 10)
                 maxT = st.slider('Temperatura Max', -19, 35, 25)
@@ -399,6 +431,68 @@ class controllerZoo:
                 st.info("NO HAY HABITATS EN EL ZOOLOGICO")
         elif eleccionMenu == "Bodega":
             self.subMenuBodega()
-        elif eleccionMenu == "API":
-            pass
+
+        elif eleccionMenu == "Alimentos":
+            options = ["","Agregar Alimento", "Sacar Alimento", "Ver Alimentos","Editar Alimento"]
+            sub_selection = st.sidebar.selectbox("Seleccione una subopción", options)
+            st.sidebar.subheader(f"Subopción seleccionada: {sub_selection}")
+ 
+            if sub_selection == "Agregar Alimento":
+        
+                data = self._viewZoologico.menuAgregarAlimento()
+                if data:
+                    if data[1] == "Herviboro":
+                        if self._AlimentoM.addHerbivoros(data[2],data[0]):
+                            st.success("Alimento Guardado")
+                        else:
+                            st.success("No se guardo el alimento")
+                    elif data[1] == "Carnivoro":
+                        if self._AlimentoM.addCarnivoros(data[2],data[0]):
+                            st.success("Alimento Guardado")
+                        else:
+                            st.success("No se guardo el alimento")
+                    st.session_state["comida"] = self._AlimentoM
+
+                    
+            elif sub_selection == "Sacar Alimento":
+            
+                alimentos_seleccionados = self._viewZoologico.mostrarSeleccionDelete(self._AlimentoM)
+                
+                if len(alimentos_seleccionados) > 0:
+                    if st.button("Sacar Alimentos"):
+                        for categoria in self._AlimentoM.categorias:
+                            categoria[:] = [alimento for alimento in categoria if alimento not in alimentos_seleccionados]
+                        st.success("Alimentos Sacados")
+                        st.session_state["comida"] = self._AlimentoM
+                else:
+                    st.write("No hay alimentos")
+        
+            elif sub_selection == "Ver Alimentos":
+                self._viewZoologico.mostrarAlimentos(self._AlimentoM)
+
+            elif sub_selection == "Editar Alimento":
+                try:
+                    alimento_seleccionado, alimento_reemplazo = self._viewZoologico.mostrarSeleccionEdit(self._AlimentoM)
+                except Exception as e:
+                    alimentos_seleccionados = None
+                    alimento_reemplazo = None
+                if alimento_reemplazo is not None:
+                    if alimento_seleccionado is not None:
+                        for categoria in self._AlimentoM.categorias:
+                            if alimento_seleccionado in categoria:
+                                
+                                index = categoria.index(alimento_seleccionado)
+                                categoria[index] = alimento_reemplazo
+                                st.session_state["comida"] = self._AlimentoM
+                                st.success("Alimento Editado")
+                                break
+                            else:
+                                st.success("No se encontró el alimento seleccionado en ninguna categoría")
+                    else:
+                        st.success("No se seleccionó ningún alimento para reemplazar")
+
         st.session_state["Zoologico"] = self._ZoologicoC
+
+    
+
+

@@ -130,8 +130,9 @@ class Habitat:
             return "No Se encontro Animal"
     def retornarAnimal(self, idA:int):
         indice = self.buscarEnHabitat(idA)
-        if indice >= 0:
-            return self.__vectoranimales[indice]
+        if not isinstance(indice, str):
+            if indice >= 0:
+                return self.__vectoranimales[indice]
         else:
             return None
 

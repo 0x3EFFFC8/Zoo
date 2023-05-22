@@ -64,17 +64,6 @@ class viewZoologico:
             panel3 = st.radio("Selecciona el Tipo de Habitat: ", list(optionsH.keys()))
         return [optionsA[panel1],optionsD[panel2],optionsH[panel3]]
 
-
-    def menuInteracciones(self,animalh:model.Animal):
-        Animal = animalh
-        print("|   El se llama  ",Animal.getNombreAnimal()," es de la espcie ",Animal.getNombreEspecie())
-        print("  Tiene ", Animal.getedad(), " Años y es ",self.dicDieta[Animal.getTipoDieta()])
-        print("Que accion quieres hacer con el ?")
-        print("[1] Comer")
-        print("[2] Jugar")
-        print("[3] Dormir")
-        print("[0] Salir  \n")
-        print("Ingrese la obcion deseada: ")
     def mostrarBodega(self,bodega:list[model.Animal.Animal]):
         tamB = len(bodega)
         if tamB == 0:
@@ -84,67 +73,109 @@ class viewZoologico:
             st.title("Animales en Bodega = "+ str(tamB))
             for animal in bodega:
                 self.mostrarAnimal(animal)
+    
+    def menuAgregarAlimento(self):
+        st.title("Agregar Alimentos")
+        habitat_selection = st.radio("Tipo de Hábitat", ["Terrestres", "Acuaticos", "Subacuaticos", "Voladores"])
+        alimentacion_selection = st.radio("Tipo de Alimentación", ["Herviboro", "Carnivoro"])
+        alimento_input = st.text_input("Alimento")
+        guardar_button = st.button("Guardar")
 
-    def menuAlimentos(self):
+        if habitat_selection == "Terrestres": habitat_selection = 1
+        elif habitat_selection == "Acuaticos": habitat_selection = 2
+        elif habitat_selection == "Subacuaticos": habitat_selection = 3
+        else: habitat_selection = 4
 
-        print("[1] Terrestres")
-        print("[2] Acuaticos")
-        print("[3] Semi Acuaticos")
-        print("[4] Voladores")
-        print("[0] Salir")
-        print("[*] Ingrese la opcion deseada: ")
+        if guardar_button:
+            alimento = [habitat_selection, alimentacion_selection, alimento_input]
+            return alimento
+        else:
+            return []
 
-    def subMenuAlimentos(self):
-        
-        print("[1] Carnivoros")
-        print("[2] Herbivoros")
-        print("[3] Omnivoros")
-        print("[*] Ingrese la opcion deseada: ")
-    """
-    def printAlimentos(self, ocpT, ocpD,alimento):
+    def mostrarAlimentos(self, Alimentos):
+        categorias = ["Terrestres", "Acuáticos", "SemiAcuáticos", "Voladores"]
+        tipos_alimentos = ["Carnívoros", "Hervíboros"]
 
-        if ocpT == 1 and ocpD == 1:
-            for i in alimento.terrestresC: print(i)
+        categoria_seleccionada = st.radio("Seleccione una categoría:", categorias)
+        tipo_alimento_seleccionado = st.radio("Seleccione el tipo de alimento:", tipos_alimentos)
 
-        elif ocpT == 1 and ocpD == 2:
-            for i in alimento.terrestresH: print(i)
+        if categoria_seleccionada == "Terrestres":
+            alimentos = Alimentos.terrestresC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.terrestresH
+        elif categoria_seleccionada == "Acuáticos":
+            alimentos = Alimentos.acuaticoC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.acuaticoH
+        elif categoria_seleccionada == "SemiAcuáticos":
+            alimentos = Alimentos.semiAcuaticoC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.semiAcuaticoH
+        elif categoria_seleccionada == "Voladores":
+            alimentos = Alimentos.voladorC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.voladorH
 
-        elif ocpT == 1 and ocpD == 3:
-            for i, j in zip(alimento.terrestresC, alimento.terrestresH):
-                print(f"{terrestresC:<10} {terrestresH}")
-        
-        elif ocpT == 2 and ocpD == 1:
-            for i in alimento.acuaticoC: print(i)
+        for alimento in alimentos:
+            if len(alimentos) > 0:
+                st.write(alimento)
+            else: st.write("No hay alimentos")
 
-        elif ocpT == 2 and ocpD == 2:
-            for i in alimento.acuaticoH: print(i)
-        
-        elif ocpT == 2 and ocpD == 3:
-             for i, j in zip(alimento.acuaticoC, alimento.acuaticoH):
-                print(f"{acuaticoC:<10} {acuaticoH}")
+    def mostrarSeleccionDelete(self, Alimentos):
+        alimentos_seleccionados = []
 
-        elif ocpT == 3 and ocpD == 1:
-            for i in alimento.semiAcuaticoC: print(i)
+        categorias = ["Terrestres", "Acuáticos", "SemiAcuáticos", "Voladores"]
+        tipos_alimentos = ["Carnívoros", "Hervíboros"]
 
-        elif ocpT == 3 and ocpD == 2:
-            for i in alimento.semiAcuaticoH: print(i)
-        
-        elif ocpT == 3 and ocpD == 3:
-             for i, j in zip(alimento.semiAcuaticoC, alimento.semiAcuaticoH):
-                print(f"{semiAcuaticoC:<10} {semiAcuaticoH}")
+        categoria_seleccionada = st.radio("Seleccione una categoría:", categorias)
+        tipo_alimento_seleccionado = st.radio("Seleccione el tipo de alimento:", tipos_alimentos)
 
-        elif ocpT == 4 and ocpD == 1:
-            for i in alimento.voladorC: print(i)
+        if categoria_seleccionada == "Terrestres":
+            alimentos = Alimentos.terrestresC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.terrestresH
+        elif categoria_seleccionada == "Acuáticos":
+            alimentos = Alimentos.acuaticoC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.acuaticoH
+        elif categoria_seleccionada == "SemiAcuáticos":
+            alimentos = Alimentos.semiAcuaticoC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.semiAcuaticoH
+        elif categoria_seleccionada == "Voladores":
+            alimentos = Alimentos.voladorC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.voladorH
 
-        elif ocpT == 4 and ocpD == 2:
-            for i in alimento.voladorH: print(i)
+        for alimento in alimentos:
+            seleccionado = st.radio("", alimentos)
+            if seleccionado:
+                alimentos_seleccionados.append(seleccionado)
 
-        elif ocpT == 4 and ocpD == 3:
-             for i, j in zip(alimento.voladorC, alimento.voladorH):
-                print(f"{voladorC:<10} {voladorH}")
-    """
+        return alimentos_seleccionados
 
 
+    def mostrarSeleccionEdit(self, Alimentos):
+        categorias = ["Terrestres", "Acuáticos", "SemiAcuáticos", "Voladores"]
+        tipos_alimentos = ["Carnívoros", "Hervíboros"]
+        alimentos_seleccionados = []
+        contador = 0
 
+        seleccion_categoria = st.radio("Seleccione una categoría:", categorias)
+        seleccion_tipo = st.radio("Seleccione un tipo de alimento:", tipos_alimentos)
 
+        if seleccion_categoria and seleccion_tipo:
+            if seleccion_categoria == "Terrestres" and seleccion_tipo == "Carnívoros":
+                alimentos = Alimentos.terrestresC
+            elif seleccion_categoria == "Terrestres" and seleccion_tipo == "Hervíboros":
+                alimentos = Alimentos.terrestresH
+            elif seleccion_categoria == "Acuáticos" and seleccion_tipo == "Carnívoros":
+                alimentos = Alimentos.acuaticoC
+            elif seleccion_categoria == "Acuáticos" and seleccion_tipo == "Hervíboros":
+                alimentos = Alimentos.acuaticoH
+            elif seleccion_categoria == "SemiAcuáticos" and seleccion_tipo == "Carnívoros":
+                alimentos = Alimentos.semiAcuaticoC
+            elif seleccion_categoria == "SemiAcuáticos" and seleccion_tipo == "Hervíboros":
+                alimentos = Alimentos.semiAcuaticoH
+            elif seleccion_categoria == "Voladores" and seleccion_tipo == "Carnívoros":
+                alimentos = Alimentos.voladorC
+            elif seleccion_categoria == "Voladores" and seleccion_tipo == "Hervíboros":
+                alimentos = Alimentos.voladorH
 
+            st.subheader("Seleccione un elemento:")
+            seleccionado = st.selectbox("Elemento seleccionado", ["Ninguno"] + alimentos)
+
+            if seleccionado != "Ninguno":
+                alimentos_seleccionados.append(seleccionado)
+
+            alimento_reemplazo = st.text_input("Ingrese el alimento de reemplazo")
+            if st.button("Remplazar"):
+                alimento_seleccionado = alimentos_seleccionados[0] if alimentos_seleccionados else None
+                if alimento_seleccionado is not None and alimento_reemplazo is not None:
+                    return alimento_seleccionado, alimento_reemplazo
+
+ 
