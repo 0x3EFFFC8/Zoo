@@ -35,7 +35,7 @@ class Alimento:
             self.semiAcuaticoH.append(alimento)
         elif tipoAnimal == 4:
             self.voladorH.append(alimento)
-     def verificarCarnivoros(self, alimento, tipoAnimal):
+    def verificarCarnivoros(self, alimento, tipoAnimal):
         if tipoAnimal == 1:
             return alimento in self.terrestresC
         elif tipoAnimal == 2:
