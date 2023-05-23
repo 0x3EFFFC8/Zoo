@@ -348,13 +348,15 @@ class controllerZoo:
                                 st.success("Animal Ingresado en el Habitat con el Id " +str(keyHabitatB) + ".")
                                 st.success("Correctamente.")
                                 st.session_state["Zoologico"] = self._ZoologicoC
+                                self.cronometro(5)
                             else:
                                 st.session_state["Zoologico"] = self._ZoologicoC
                                 st.error(resProcesoIngreso)
+                                self.cronometro(5)
                         else:
                             st.session_state["Zoologico"] = self._ZoologicoC
                             st.error(animalB)
-                        self.cronometro(5)
+                            self.cronometro(5)
                     else:
                         st.session_state["Zoologico"] = self._ZoologicoC
             else:
