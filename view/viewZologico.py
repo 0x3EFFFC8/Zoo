@@ -178,4 +178,27 @@ class viewZoologico:
                 if alimento_seleccionado is not None and alimento_reemplazo is not None:
                     return alimento_seleccionado, alimento_reemplazo
 
- 
+    def get_animal_data(animal_name):
+        api_url = f'https://api.api-ninjas.com/v1/animals?name={animal_name}'
+        headers = {'X-Api-Key': 'your-api-key'}
+
+        try:
+            response = requests.get(api_url, headers=headers)
+            response.raise_for_status()
+            animal_data = response.json()[0]
+            important_data = {
+                'Nombre': animal_data['name'],
+                'Clasificación': animal_data['taxonomy']['class'],
+                'Orden': animal_data['taxonomy']['order'],
+                'Familia': animal_data['taxonomy']['family'],
+                'Hábitat': animal_data['characteristics']['habitat'],
+                'Dieta': animal_data['characteristics']['diet'],
+                'Velocidad Máxima': animal_data['characteristics']['top_speed'],
+                'Esperanza de Vida': animal_data['characteristics']['lifespan'],
+                'Peso': animal_data['characteristics']['weight'],
+                'Longitud': animal_data['characteristics']['length']
+            }
+            return important_data
+        except (requests.exceptions.RequestException, IndexError) as e:
+            st.error(f'Error en la llamada a la API: {e}')
+            return None 
