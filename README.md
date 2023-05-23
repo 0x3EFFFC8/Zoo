@@ -2,7 +2,7 @@
 - Documentacion : https://docs.google.com/document/d/1EmKqiasSKhZLX2QTdeBXUAfIqm9hh3bBojo262MddHI/edit?usp=sharing
 - Autoevaluacion 1: https://docs.google.com/document/d/1cYI9Cj0o8W3Fx_4WVC01van-i67PXUIB-LFnX2jsigo/edit?usp=sharing
 - Autoevaluacion 2: https://docs.google.com/document/d/1vqaGZd0sRHJQYCQnG8GfJJVeUIFiXsdHNImOV-fGSIY/edit?usp=sharing
-- UML : 
+- UML : https://n9.cl/proyectozoo2
 
 # Enunciado
 En este proyecto, se espera que los estudiantes implementen un programa en Python que simule el funcionamiento

@@ -5,7 +5,7 @@ if __name__ == '__main__':
     st.set_page_config(
         page_title= "Zoo Cali",
         layout = "wide" ,
-        page_icon= "👙"
+        page_icon= "🦚"
     )
     program = controller.controllerZoo()
     program.menuZoo()

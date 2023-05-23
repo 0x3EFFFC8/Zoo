@@ -10,23 +10,32 @@ import model.Alimento as AlimentoC
 import requests
 import streamlit as st
 import os
+import time
+import threading
+
 class controllerZoo:
     def __init__(self):
 
         if "Zoologico" in st.session_state:
             self._ZoologicoC = st.session_state["Zoologico"]
         else:
-            self._ZoologicoC = ZoologicoM.Zoologico("ZOOLOGICO DE CALI")
+            self._ZoologicoC = ZoologicoM.Zoologico("ZOOLOGICO JAVE-PAVO")
         if "comida" in st.session_state:
             self._AlimentoM = st.session_state["comida"]
         else:
             self._AlimentoM = AlimentoC.Alimento()
-
         self.temAnimal = None
         self.temHabitat = None
         self._viewZoologico = viewZoo.viewZoologico()
         self._dicTipoH = {1:"Selvatico" , 2:"Bosque", 3: "Desertico",4: "Oceanico",5:"Polar",6: "Manglar",7:"Montañoso",8:"Tropical" ,9:"Sabana"}
         self._dicAdecuacion = {1:"Terrestre" , 2:"Acuatico", 3: "SemiAcuatico",4: "Volador"}
+
+    def cronometro(self,tiempo):
+        hilo = threading.Thread(target=self.cronometro, args=(tiempo))
+        hilo.start()
+        time.sleep(tiempo)
+        hilo.join()
+        st.experimental_rerun()
 
 
     def panelCrearAnimalHabitat(self, habitatAde,habitatDie,habitatTipo):
@@ -146,6 +155,7 @@ class controllerZoo:
         # Crear el submenú horizontal
         if eleccionH == "Agregar Animal al habitat":
             ingresoAnimal = self.panelCrearAnimalHabitat(habitatI.getTipoAdecuacion(),habitatI.getTipoDieta(),habitatI.getIdTipoH())
+
             if ingresoAnimal != None:
                 resIngre = habitatI.agregarAnimalH(ingresoAnimal)
                 if resIngre == 1:
@@ -155,6 +165,7 @@ class controllerZoo:
                     st.success("Animal Ingresado Correctamente en el Habitat")
                 else:
                     st.error(resIngre)
+                self.cronometro(5)
         elif eleccionH == "Mostrar Animales dentro del habitat":
             self._viewZoologico.mostrarAnimalesHabitat(habitatI,keyH)
         elif eleccionH == "Sacar Animal del Zoologico":
@@ -179,6 +190,8 @@ class controllerZoo:
                             st.session_state["Zoologico"] = self._ZoologicoC
                         else:
                             st.error(proceso)
+                        self.cronometro(5)
+
 
         elif eleccionH == "Sacar Habitat a Bodega":
             ## Mirar porque no funciona
@@ -206,6 +219,7 @@ class controllerZoo:
                                 st.error(proceso)
                         else:
                             st.error(animalT)
+                        self.cronometro(5)
 
         elif eleccionH == "Interactuar Animal":
             if len(habitatI.getVectorAH()) > 0:
@@ -234,20 +248,21 @@ class controllerZoo:
                             alimento = st.text_input("Ingrese el Alimento")
                             if st.button("Enviar Comida", key="comer"):
                                 comer = animal.Comer(self._AlimentoM, alimento)
-                                st.write(comer)
+                                self.cronometro(5)
 
                         if active_tab == "Dormir":  # Pestaña Dormir
                             st.header("Dormir")
                             if st.button("Enviar Dormir", key="dormir"):
                                 dormir = animal.dormir()
-                                st.write(dormir)
+                                self.cronometro(5)
                         if active_tab == "Jugar":  # Pestaña Jugar
                             st.header("Jugar")
                             if st.button("Enviar Juego", key="jugar"):
                                 jugar = animal.jugar()
-                                st.write(jugar)
+                                self.cronometro(5)
                     else:
                         st.error(animal)
+                    self.cronometro(5)
             else:
                 st.info("No Hay Animales en el Habitat.")
 
@@ -269,6 +284,7 @@ class controllerZoo:
                     st.success("Animal Ingresado Correctamente en la Bodega")
                 else:
                     st.error(resIngre)
+                self.cronometro(5)
         elif eleccionB == "Eliminar Animal":
             if len(self._ZoologicoC.getBodega()) > 0:
                 idAnimal = None
@@ -291,6 +307,7 @@ class controllerZoo:
                             st.success("Eliminado con Exito")
                         else:
                             st.error(resProceso)
+                        self.cronometro(5)
                     else:
                         st.session_state["Zoologico"] = self._ZoologicoC
         elif eleccionB == "Mover a Habitat":
@@ -334,6 +351,7 @@ class controllerZoo:
                         else:
                             st.session_state["Zoologico"] = self._ZoologicoC
                             st.error(animalB)
+                        self.cronometro(5)
                     else:
                         st.session_state["Zoologico"] = self._ZoologicoC
             else:
@@ -343,6 +361,8 @@ class controllerZoo:
             self._viewZoologico.mostrarBodega(bodega)
         st.session_state["Zoologico"] = self._ZoologicoC
     def menuZoo(self):
+
+        # Mantén el programa en ejecución para continuar capturando clics
         st.markdown(f"<h1 style='text-align: center; color: green;font-family: Times New Roman;margin-top: -50px;background-color: #d9f2c3;'>{self._ZoologicoC.getNombre()}</h1>", unsafe_allow_html=True)
         menu = ["Ver Mapa Zoologico", "Crear Habitat", "Ver Habitat", "Eliminar Habitat del Zoologico", "Bodega", "Alimentos","Biblioteca"]
         eleccionMenu = st.sidebar.selectbox("Seleccione una opción", menu)
@@ -375,6 +395,7 @@ class controllerZoo:
                         st.success("Habitat Ingresado Correctamente")
                     else:
                         st.error(resIngre)
+                    self.cronometro(5)
 
         elif eleccionMenu == "Ver Habitat":
             dicInverso = {"": 0}
@@ -413,6 +434,7 @@ class controllerZoo:
                             st.success("El Habitat seleccionado fue eliminado Correctamente.")
                         else:
                             st.error(resProceso)
+                        self.cronometro(5)
             else:
                 st.info("NO HAY HABITATS EN EL ZOOLOGICO")
         elif eleccionMenu == "Bodega":
@@ -432,11 +454,13 @@ class controllerZoo:
                             st.success("Alimento Guardado")
                         else:
                             st.success("No se guardo el alimento")
+                        self.cronometro(5)
                     elif data[1] == "Carnivoro":
                         if self._AlimentoM.addCarnivoros(data[2],data[0]):
                             st.success("Alimento Guardado")
                         else:
                             st.success("No se guardo el alimento")
+                        self.cronometro(5)
                     st.session_state["comida"] = self._AlimentoM
 
                     
@@ -450,6 +474,7 @@ class controllerZoo:
                             categoria[:] = [alimento for alimento in categoria if alimento not in alimentos_seleccionados]
                         st.success("Alimentos Sacados")
                         st.session_state["comida"] = self._AlimentoM
+                        self.cronometro(5)
                 else:
                     st.write("No hay alimentos")
         
@@ -474,6 +499,7 @@ class controllerZoo:
                                 break
                             else:
                                 pass
+                            self.cronometro(5)
                     else:
                         st.success("No se seleccionó ningún alimento para reemplazar")
         elif eleccionMenu == "Biblioteca":
@@ -528,7 +554,7 @@ class controllerZoo:
                         st.error(f"Error en la llamada a la API para el hábitat {selected_habitat}: {e}")
                 else:
                     st.warning("No se encontró un animal para este hábitat")
-                
+
         st.session_state["Zoologico"] = self._ZoologicoC
 
     
