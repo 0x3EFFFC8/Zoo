@@ -457,7 +457,7 @@ class controllerZoo:
                         self.cronometro(5)
                     elif data[1] == "Carnivoro":
                         if self._AlimentoM.addCarnivoros(data[2],data[0]):
-                            st.success("Alimento Guardado")
+                            st.success("Alimento Guardado") 
                         else:
                             st.success("No se guardo el alimento")
                         self.cronometro(5)
