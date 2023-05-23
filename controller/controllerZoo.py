@@ -427,7 +427,7 @@ class controllerZoo:
         
                 data = self._viewZoologico.menuAgregarAlimento()
                 if data:
-                    if data[1] == "Herviboro":
+                    if data[1] == "Herbivoro":
                         if self._AlimentoM.addHerbivoros(data[2],data[0]):
                             st.success("Alimento Guardado")
                         else:

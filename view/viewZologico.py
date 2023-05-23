@@ -77,7 +77,7 @@ class viewZoologico:
     def menuAgregarAlimento(self):
         st.title("Agregar Alimentos")
         habitat_selection = st.radio("Tipo de Hábitat", ["Terrestres", "Acuaticos", "Subacuaticos", "Voladores"])
-        alimentacion_selection = st.radio("Tipo de Alimentación", ["Herviboro", "Carnivoro"])
+        alimentacion_selection = st.radio("Tipo de Alimentación", ["Herbivoro", "Carnivoro"])
         alimento_input = st.text_input("Alimento")
         guardar_button = st.button("Guardar")
 
@@ -94,7 +94,7 @@ class viewZoologico:
 
     def mostrarAlimentos(self, Alimentos):
         categorias = ["Terrestres", "Acuáticos", "SemiAcuáticos", "Voladores"]
-        tipos_alimentos = ["Carnívoros", "Hervíboros"]
+        tipos_alimentos = ["Carnívoros", "Herbívoros"]
 
         categoria_seleccionada = st.radio("Seleccione una categoría:", categorias)
         tipo_alimento_seleccionado = st.radio("Seleccione el tipo de alimento:", tipos_alimentos)
@@ -117,7 +117,7 @@ class viewZoologico:
         alimentos_seleccionados = []
 
         categorias = ["Terrestres", "Acuáticos", "SemiAcuáticos", "Voladores"]
-        tipos_alimentos = ["Carnívoros", "Hervíboros"]
+        tipos_alimentos = ["Carnívoros", "Herbívoros"]
 
         categoria_seleccionada = st.radio("Seleccione una categoría:", categorias)
         tipo_alimento_seleccionado = st.radio("Seleccione el tipo de alimento:", tipos_alimentos)
@@ -141,7 +141,7 @@ class viewZoologico:
 
     def mostrarSeleccionEdit(self, Alimentos):
         categorias = ["Terrestres", "Acuáticos", "SemiAcuáticos", "Voladores"]
-        tipos_alimentos = ["Carnívoros", "Hervíboros"]
+        tipos_alimentos = ["Carnívoros", "Herbívoros"]
         alimentos_seleccionados = []
         contador = 0
 
@@ -151,19 +151,19 @@ class viewZoologico:
         if seleccion_categoria and seleccion_tipo:
             if seleccion_categoria == "Terrestres" and seleccion_tipo == "Carnívoros":
                 alimentos = Alimentos.terrestresC
-            elif seleccion_categoria == "Terrestres" and seleccion_tipo == "Hervíboros":
+            elif seleccion_categoria == "Terrestres" and seleccion_tipo == "Herbívoros":
                 alimentos = Alimentos.terrestresH
             elif seleccion_categoria == "Acuáticos" and seleccion_tipo == "Carnívoros":
                 alimentos = Alimentos.acuaticoC
-            elif seleccion_categoria == "Acuáticos" and seleccion_tipo == "Hervíboros":
+            elif seleccion_categoria == "Acuáticos" and seleccion_tipo == "Herbívoros":
                 alimentos = Alimentos.acuaticoH
             elif seleccion_categoria == "SemiAcuáticos" and seleccion_tipo == "Carnívoros":
                 alimentos = Alimentos.semiAcuaticoC
-            elif seleccion_categoria == "SemiAcuáticos" and seleccion_tipo == "Hervíboros":
+            elif seleccion_categoria == "SemiAcuáticos" and seleccion_tipo == "Herbívoros":
                 alimentos = Alimentos.semiAcuaticoH
             elif seleccion_categoria == "Voladores" and seleccion_tipo == "Carnívoros":
                 alimentos = Alimentos.voladorC
-            elif seleccion_categoria == "Voladores" and seleccion_tipo == "Hervíboros":
+            elif seleccion_categoria == "Voladores" and seleccion_tipo == "Herbívoros":
                 alimentos = Alimentos.voladorH
 
             st.subheader("Seleccione un elemento:")
@@ -178,27 +178,4 @@ class viewZoologico:
                 if alimento_seleccionado is not None and alimento_reemplazo is not None:
                     return alimento_seleccionado, alimento_reemplazo
 
-    def get_animal_data(animal_name):
-        api_url = f'https://api.api-ninjas.com/v1/animals?name={animal_name}'
-        headers = {'X-Api-Key': 'your-api-key'}
-
-        try:
-            response = requests.get(api_url, headers=headers)
-            response.raise_for_status()
-            animal_data = response.json()[0]
-            important_data = {
-                'Nombre': animal_data['name'],
-                'Clasificación': animal_data['taxonomy']['class'],
-                'Orden': animal_data['taxonomy']['order'],
-                'Familia': animal_data['taxonomy']['family'],
-                'Hábitat': animal_data['characteristics']['habitat'],
-                'Dieta': animal_data['characteristics']['diet'],
-                'Velocidad Máxima': animal_data['characteristics']['top_speed'],
-                'Esperanza de Vida': animal_data['characteristics']['lifespan'],
-                'Peso': animal_data['characteristics']['weight'],
-                'Longitud': animal_data['characteristics']['length']
-            }
-            return important_data
-        except (requests.exceptions.RequestException, IndexError) as e:
-            st.error(f'Error en la llamada a la API: {e}')
-            return None 
+    
