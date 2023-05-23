@@ -230,16 +230,14 @@ class controllerZoo:
                     newValA = animalE.getIdAnimal()
                     newClaveA = animalE.getNombreAnimal()  + " - " + animalE.getNombreEspecie()
                     dicInversoA[newClaveA] = newValA
-
                 cajaAnimalesB = st.selectbox("Elige un Animal: ", list(dicInversoA.keys()))
                 idAnimal = dicInversoA[cajaAnimalesB]
                 if cajaAnimalesB != 0:
-
-
                     animal = habitatI.retornarAnimal(idAnimal)
                     if type(animal) != str:
                         self._viewZoologico.mostrarAnimal(animal)
                         # Crear las pestañas
+                        res = 0
                         tabs = ["Comer", "Dormir", "Jugar"]
                         active_tab = st.sidebar.radio("Opciones", tabs)
                         if active_tab == "Comer":  # Pestaña Comer
@@ -248,20 +246,25 @@ class controllerZoo:
                             alimento = st.text_input("Ingrese el Alimento")
                             if st.button("Enviar Comida", key="comer"):
                                 comer = animal.Comer(self._AlimentoM, alimento)
-                                self.cronometro(5)
+                                st.success(comer)
+                                res=1
 
                         if active_tab == "Dormir":  # Pestaña Dormir
                             st.header("Dormir")
                             if st.button("Enviar Dormir", key="dormir"):
                                 dormir = animal.dormir()
-                                self.cronometro(5)
+                                st.success(dormir)
+                                res =1
                         if active_tab == "Jugar":  # Pestaña Jugar
                             st.header("Jugar")
                             if st.button("Enviar Juego", key="jugar"):
                                 jugar = animal.jugar()
-                                self.cronometro(5)
+                                st.success(jugar)
+                                res = 1
+                        if res == 1:
+                            self.cronometro(3)
                     else:
-                        st.error(animal)
+                        st.info("Escoge un Animal")
                     self.cronometro(5)
             else:
                 st.info("No Hay Animales en el Habitat.")
@@ -452,18 +455,13 @@ class controllerZoo:
                     if data[1] == "Herbivoro":
                         if self._AlimentoM.addHerbivoros(data[2],data[0]):
                             st.success("Alimento Guardado")
-                        else:
-                            st.success("No se guardo el alimento")
-                        self.cronometro(5)
                     elif data[1] == "Carnivoro":
                         if self._AlimentoM.addCarnivoros(data[2],data[0]):
-                            st.success("Alimento Guardado") 
-                        else:
-                            st.success("No se guardo el alimento")
-                        self.cronometro(5)
-                    st.session_state["comida"] = self._AlimentoM
+                            st.success("Alimento Guardado")
 
-                    
+                    st.success("Alimento Guardado")
+                    st.session_state["comida"] = self._AlimentoM
+                    self.cronometro(5)
             elif sub_selection == "Sacar Alimento":
             
                 alimentos_seleccionados = self._viewZoologico.mostrarSeleccionDelete(self._AlimentoM)
@@ -525,7 +523,7 @@ class controllerZoo:
                 selected_habitat = st.sidebar.selectbox("Selecciona un hábitat", list(habitats.values()))
                 st.subheader(f"Hábitat: {selected_habitat}")
                 animal_name = animal_names.get(list(habitats.keys())[list(habitats.values()).index(selected_habitat)])
-                
+
                 if animal_name:
                     api_url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
                     headers = {'X-Api-Key': 'NIuMGUWYpQXt/6xruXcq9Q==wWYp8Q98OfKUWLpm'}

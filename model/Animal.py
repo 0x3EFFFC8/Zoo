@@ -82,25 +82,25 @@ class Animal(ABC):
 
             if alimentos.verificarCarnivoros(alimento, self._idAdaptacion):
                 alimentos.deleteAlimentoC(alimento, self._idAdaptacion)
-                return "comiendo " + alimento
+                return "Comiendo " + alimento
             return "El "+alimento+" no esta disponible"
                 
         elif self._tipoDieta == 2:
 
             if alimentos.verificarHerbivoros(alimento, self._idAdaptacion):
                 alimentos.deleteAlimentoH(alimento, self._idAdaptacion)
-                return "comiendo " + alimento
+                return "Comiendo " + alimento
             return "El "+alimento+" no esta disponible"
 
         elif self._tipoDieta == 3:
 
             if alimentos.verificarCarnivoros(alimento, self._idAdaptacion):
                 alimentos.deleteAlimentoC(alimento, self._idAdaptacion)
-                return "comiendo " + alimento
+                return "Comiendo " + alimento
 
             elif alimentos.verificarHerbivoros(alimento,self._idAdaptacion):
                 alimentos.deleteAlimentoH(alimento,self._idAdaptacion)
-                return "comiendo " + alimento
+                return "Comiendo " + alimento
             return "El "+alimento+" no esta disponible"
 
 

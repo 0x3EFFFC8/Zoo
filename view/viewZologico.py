@@ -109,9 +109,10 @@ class viewZoologico:
             alimentos = Alimentos.voladorC if tipo_alimento_seleccionado == "Carnívoros" else Alimentos.voladorH
 
         for alimento in alimentos:
-            if len(alimentos) > 0:
+            if alimentos:
                 st.write(alimento)
-            else: st.write("No hay alimentos")
+            else: 
+                st.write("No hay alimentos")
 
     def mostrarSeleccionDelete(self, Alimentos):
         alimentos_seleccionados = []
