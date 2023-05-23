@@ -92,7 +92,8 @@ class Habitat:
                 temAnimal = self.__vectoranimales[indice]
                 if temAnimal.getIdAnimal() == idA:
                     ban = True
-                indice+=1
+                else:
+                    indice+=1
             if ban == True:
                 return indice
             else:
@@ -134,7 +135,7 @@ class Habitat:
             if indice >= 0:
                 return self.__vectoranimales[indice]
         else:
-            return None
+            return indice
 
 
 

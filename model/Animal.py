@@ -59,10 +59,10 @@ class Animal(ABC):
     def dormir(self):
         if self._boolDormir == False:
             self._boolDormir = True
-            return "Esta muy cansado, va a dormir por " + str(self.gethorasDormir()) + "Horas."        
+            return "Esta muy cansado, va a dormir por " + str(self.gethorasDormir()) + " Horas."
         else:
             self.__boolDormir = False
-            return "Esta muy activo, ya durmio sus "+ str(self.gethorasDormir()) + "Horas diarias."
+            return "Esta muy activo, ya durmio sus "+ str(self.gethorasDormir()) + " Horas diarias."
 
     @abstractmethod
     def getTipoAdapA(self):

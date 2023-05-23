@@ -27,32 +27,6 @@ class controllerZoo:
         self._dicTipoH = {1:"Selvatico" , 2:"Bosque", 3: "Desertico",4: "Oceanico",5:"Polar",6: "Manglar",7:"Montañoso",8:"Tropical" ,9:"Sabana"}
         self._dicAdecuacion = {1:"Terrestre" , 2:"Acuatico", 3: "SemiAcuatico",4: "Volador"}
 
-    """
-
-
-        if error == "":
-            resU = "Proceso Exitoso."
-            print(resU)
-        else:
-            resU = "Error: "
-            print(resU, error)
-    def eliminarHabitat(self):
-        # Mostrar Habitats
-        resU = ""
-        error = ""
-        keyH = self.recibirOpcion(input("Ingrese Clave del Habitat"))
-        if type (keyH) == int:
-            resProceso = self._ZoologicoC.eliminarHabitat(keyH)
-            if resProceso != 1:
-                error = resProceso
-        else:
-            error = keyH
-        if error == "":
-            resU = "EL HABITAT "+ str(keyH) + ".\nFue eliminado del Zoologico con Exito"
-        else:
-            resU = "Error"
-
-    """
 
     def panelCrearAnimalHabitat(self, habitatAde,habitatDie,habitatTipo):
         tuplaT = None
@@ -233,37 +207,48 @@ class controllerZoo:
                             st.error(animalT)
 
         elif eleccionH == "Interactuar Animal":
+            if len(habitatI.getVectorAH()) > 0:
+                idAnimal = None
+                dicInversoA = {"": 0}
+                habitat: list[AnimalM.Animal] = habitatI.getVectorAH()
+                for animalE in habitat:
+                    newValA = animalE.getIdAnimal()
+                    newClaveA = animalE.getNombreAnimal()  + " - " + animalE.getNombreEspecie()
+                    dicInversoA[newClaveA] = newValA
 
-            id_input = st.text_input("Ingrese el ID del animal")
-            if st.button("Enviar ID"):
-                if int(id_input) < self._ZoologicoC.getCreadorId() and int(id_input) > 0:
-                    st.success("ID seleccionado.")
-                    idA = int(id_input)
-                    animal = habitatI.retornarAnimal(idA-1)
+                cajaAnimalesB = st.selectbox("Elige un Animal: ", list(dicInversoA.keys()))
+                idAnimal = dicInversoA[cajaAnimalesB]
+                if cajaAnimalesB != 0:
 
-                    # Crear las pestañas
-                    tabs = ["Comer", "Dormir", "Jugar"]
-                    active_tab = st.sidebar.radio("Opciones", tabs)
 
-                    if active_tab == "Comer":  # Pestaña Comer
-                        st.header("Comer")
-                        alimento = st.text_input("Ingrese el Alimento")
-                        if st.button("Enviar Comida", key="comer"):
-                            comer = animal.Comer(self._AlimentoM, alimento)
-                            st.write(comer)
+                    animal = habitatI.retornarAnimal(idAnimal)
+                    if type(animal) != str:
+                        self._viewZoologico.mostrarAnimal(animal)
+                        # Crear las pestañas
+                        tabs = ["Comer", "Dormir", "Jugar"]
+                        active_tab = st.sidebar.radio("Opciones", tabs)
+                        if active_tab == "Comer":  # Pestaña Comer
+                            #self._viewZoologico.
+                            st.header("Comer")
+                            alimento = st.text_input("Ingrese el Alimento")
+                            if st.button("Enviar Comida", key="comer"):
+                                comer = animal.Comer(self._AlimentoM, alimento)
+                                st.write(comer)
 
-                    if active_tab == "Dormir":  # Pestaña Dormir
-                        st.header("Dormir")
-                        if st.button("Enviar Dormir", key="dormir"):
-                            dormir = animal.dormir()
-                            st.write(dormir)
-                    if active_tab == "Jugar":  # Pestaña Jugar
-                        st.header("Jugar")
-                        if st.button("Enviar Juego", key="jugar"):
-                            jugar = animal.jugar()
-                            st.write(jugar)
-                else:
-                    st.error("ID incorrecto")
+                        if active_tab == "Dormir":  # Pestaña Dormir
+                            st.header("Dormir")
+                            if st.button("Enviar Dormir", key="dormir"):
+                                dormir = animal.dormir()
+                                st.write(dormir)
+                        if active_tab == "Jugar":  # Pestaña Jugar
+                            st.header("Jugar")
+                            if st.button("Enviar Juego", key="jugar"):
+                                jugar = animal.jugar()
+                                st.write(jugar)
+                    else:
+                        st.error(animal)
+            else:
+                st.info("No Hay Animales en el Habitat.")
 
         st.session_state["Zoologico"] = self._ZoologicoC
 
@@ -487,7 +472,7 @@ class controllerZoo:
                                 st.success("Alimento Editado")
                                 break
                             else:
-                                st.success("No se encontró el alimento seleccionado en ninguna categoría")
+                                pass
                     else:
                         st.success("No se seleccionó ningún alimento para reemplazar")
 
