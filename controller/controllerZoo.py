@@ -510,54 +510,57 @@ class controllerZoo:
                     "Lion": "https://n9.cl/lionleon"            
                 }              
 
-                num_columns = 3         
+                num_columns = 3
+                num_animals_per_column = 3
 
                 for habitat_id, habitat_name in habitats.items():
                     st.subheader(f"Hábitat: {habitat_name}")
 
+                    st.header("Animales")
+
                     # Dividir el espacio en columnas
                     columns = st.columns(num_columns)
 
-                    for i in range(num_columns):
-                        # Obtener un animal aleatorio para el hábitat
-                        animal_name = animal_names.get(habitat_id)
+                    # Obtener los animales correspondientes al hábitat
+                    animal_names = [
+                        "Bengal Tiger", "Red Fox", "Rattlesnake",
+                        "Dolphin", "Polar Bear", "Mangrove Monitor",
+                        "Mountain Goat", "Toucan", "Lion"
+                    ]
+                    animals = animal_names[(habitat_id - 1) * num_animals_per_column:habitat_id * num_animals_per_column]
 
-                        if animal_name:
-                            # Obtener información del animal
-                            api_url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
-                            headers = {'X-Api-Key': 'NIuMGUWYpQXt/6xruXcq9Q==wWYp8Q98OfKUWLpm'}
+                    for i, animal_name in enumerate(animals):
+                        # Obtener información del animal
+                        api_url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
+                        headers = {'X-Api-Key': 'NIuMGUWYpQXt/6xruXcq9Q==wWYp8Q98OfKUWLpm'}
 
-                            try:
-                                response = requests.get(api_url, headers=headers)
-                                response.raise_for_status()
-                                animal_info = response.json()[0]
+                        try:
+                            response = requests.get(api_url, headers=headers)
+                            response.raise_for_status()
+                            animal_info = response.json()[0]
 
-                                # Mostrar nombre del animal
-                                columns[i].write("Nombre:", animal_info['name'])
+                            # Mostrar nombre del animal
+                            columns[i % num_columns].write("Nombre:", animal_info['name'])
 
-                                # Obtener la URL de la imagen del animal
-                                image_url = animal_images.get(animal_name)
-                                if image_url:
-                                    # Mostrar la imagen del animal con tamaño adecuado
-                                    columns[i].image(image_url, caption=f"Imagen de {animal_info['name']}", width=300)
-                                else:
-                                    columns[i].warning("No se encontró la imagen del animal")
+                            # Obtener la URL de la imagen del animal
+                            image_url = animal_images.get(animal_name)
+                            if image_url:
+                                # Mostrar la imagen del animal con tamaño adecuado
+                                columns[i % num_columns].image(image_url, caption=f"Imagen de {animal_info['name']}", width=300)
+                            else:
+                                columns[i % num_columns].warning("No se encontró la imagen del animal")
 
-                                # Mostrar información del animal
-                                columns[i].write("Hábitat:", habitat_name)
-                                columns[i].write("Clasificación:", animal_info['taxonomy']['class'])
-                                columns[i].write("Dieta:", animal_info['characteristics']['diet'])
-                                columns[i].write("Velocidad Máxima:", animal_info['characteristics']['top_speed'])
-                                columns[i].write("Esperanza de Vida:", animal_info['characteristics']['lifespan'])
-                                columns[i].write("Peso:", animal_info['characteristics']['weight'])
-                                columns[i].write("Longitud:", animal_info['characteristics']['length'])
+                            # Mostrar información del animal
+                            columns[i % num_columns].write("Hábitat:", habitat_name)
+                            columns[i % num_columns].write("Clasificación:", animal_info['taxonomy']['class'])
+                            columns[i % num_columns].write("Dieta:", animal_info['characteristics']['diet'])
+                            columns[i % num_columns].write("Velocidad Máxima:", animal_info['characteristics']['top_speed'])
+                            columns[i % num_columns].write("Esperanza de Vida:", animal_info['characteristics']['lifespan'])
+                            columns[i % num_columns].write("Peso:", animal_info['characteristics']['weight'])
+                            columns[i % num_columns].write("Longitud:", animal_info['characteristics']['length'])
 
-                            except (requests.exceptions.RequestException, IndexError) as e:
-                                columns[i].error(f"Error en la llamada a la API para el hábitat {habitat_name}: {e}")
-
-                        else:
-                            columns[i].warning("No se encontró un animal para este hábitat")
-       
+                        except (requests.exceptions.RequestException, IndexError) as e:
+                            columns[i % num_columns].error(f"Error en la llamada a la API para el hábitat {habitat_name}: {e}")
 
         st.session_state["Zoologico"] = self._ZoologicoC
 
