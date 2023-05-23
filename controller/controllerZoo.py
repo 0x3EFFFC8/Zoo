@@ -453,11 +453,11 @@ class controllerZoo:
                 data = self._viewZoologico.menuAgregarAlimento()
                 if data:
                     if data[1] == "Herbivoro":
-                        if self._AlimentoM.addHerbivoros(data[2],data[0]):
-                            st.success("Alimento Guardado")
+                        self._AlimentoM.addHerbivoros(data[2],data[0])
+                        st.success("Alimento Guardado")
                     elif data[1] == "Carnivoro":
-                        if self._AlimentoM.addCarnivoros(data[2],data[0]):
-                            st.success("Alimento Guardado")
+                        self._AlimentoM.addCarnivoros(data[2],data[0])
+                        st.success("Alimento Guardado")
 
                     st.success("Alimento Guardado")
                     st.session_state["comida"] = self._AlimentoM
