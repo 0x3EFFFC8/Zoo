@@ -9,6 +9,7 @@ import model.Terrestre as TerrestreM
 import model.Alimento as AlimentoC
 import requests
 import streamlit as st
+import os
 class controllerZoo:
     def __init__(self):
 
@@ -475,74 +476,59 @@ class controllerZoo:
                                 pass
                     else:
                         st.success("No se seleccionó ningún alimento para reemplazar")
-            elif sub_selection == "Biblioteca":
+        elif eleccionMenu == "Biblioteca":
 
-                habitats = {1: "Selvático", 2: "Bosque", 3: "Desértico", 4: "Oceánico", 5: "Polar", 6: "Manglar", 7: "Montañoso", 8: "Tropical", 9: "Sabana"}           
+                habitats = {1: "Selvático", 2: "Bosque", 3: "Desértico", 4: "Oceánico", 5: "Polar", 6: "Manglar", 7: "Snow Leopard", 8: "Tropical", 9: "Sabana"}           
+            
+                animal_names = {1: "Bengal Tiger",2: "Red Fox",3: "Rattlesnake",
+                                4: "Dolphin",5: "Polar Bear",6: "Mangrove Snake",
+                                7: "Snow Leopard",8: "Toucan",9: "Lion"
+                            }
+                media = os.path.join(os.path.dirname(__file__), "../media")
+                animal_images = {
+                        "Bengal Tiger": os.path.join(media, "Bengal Tiger.jpg"),
+                        "Red Fox": os.path.join(media, "Red Fox.jpg"),
+                        "Rattlesnake": os.path.join(media, "Rattlesnake.jpg"),
+                        "Dolphin": os.path.join(media, "Dolphin.jpg"),
+                        "Polar Bear": os.path.join(media, "Polar Bear.jpg"),
+                        "Mangrove Snake": os.path.join(media, "Mangrove Snake.jpeg"),
+                        "Snow Leopard": os.path.join(media, "Snow Leopard.jpg"),
+                        "Toucan": os.path.join(media, "Toucan.jpg"),
+                        "Lion": os.path.join(media, "Lion.jpg")         
+                }
+                selected_habitat = st.sidebar.selectbox("Selecciona un hábitat", list(habitats.values()))
+                st.subheader(f"Hábitat: {selected_habitat}")
+                animal_name = animal_names.get(list(habitats.keys())[list(habitats.values()).index(selected_habitat)])
+                
+                if animal_name:
+                    api_url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
+                    headers = {'X-Api-Key': 'NIuMGUWYpQXt/6xruXcq9Q==wWYp8Q98OfKUWLpm'}
 
-                animal_images = {           
-                    "Bengal Tiger": "https://n9.cl/bengalt",            
-                    "Red Fox": "https://n9.cl/foxrd",           
-                    "Rattlesnake": "https://n9.cl/snakerr",         
-                    "Dolphin": "https://n9.cl/dolphinew",           
-                    "Polar Bear": "https://n9.cl/polarb",           
-                    "Mangrove Monitor": "https://n9.cl/msodn",          
-                    "Mountain Goat": "https://n9.cl/goatca",            
-                    "Toucan": "https://n9.cl/toucap",           
-                    "Lion": "https://n9.cl/lionleon"            
-                }              
+                    try:
+                        response = requests.get(api_url, headers=headers)
+                        response.raise_for_status()
+                        animal_info = response.json()[0]
 
-                num_columns = 3
-                num_animals_per_column = 3
+                        st.write("Nombre:", animal_info['name'])
 
-                for habitat_id, habitat_name in habitats.items():
-                    st.subheader(f"Hábitat: {habitat_name}")
+                        image_url = animal_images.get(animal_name)
+                        if image_url:
+                            st.image(image_url, caption=f"Imagen de {animal_info['name']}", use_column_width=True)
+                        else:
+                            st.warning("No se encontró la imagen del animal")
 
-                    st.header("Animales")
-
-                    # Dividir el espacio en columnas
-                    columns = st.columns(num_columns)
-
-                    # Obtener los animales correspondientes al hábitat
-                    animal_names = [
-                        "Bengal Tiger", "Red Fox", "Rattlesnake",
-                        "Dolphin", "Polar Bear", "Mangrove Monitor",
-                        "Mountain Goat", "Toucan", "Lion"
-                    ]
-                    animals = animal_names[(habitat_id - 1) * num_animals_per_column:habitat_id * num_animals_per_column]
-
-                    for i, animal_name in enumerate(animals):
-                        # Obtener información del animal
-                        api_url = f"https://api.api-ninjas.com/v1/animals?name={animal_name}"
-                        headers = {'X-Api-Key': 'NIuMGUWYpQXt/6xruXcq9Q==wWYp8Q98OfKUWLpm'}
-
-                        try:
-                            response = requests.get(api_url, headers=headers)
-                            response.raise_for_status()
-                            animal_info = response.json()[0]
-
-                            # Mostrar nombre del animal
-                            columns[i % num_columns].write("Nombre:", animal_info['name'])
-
-                            # Obtener la URL de la imagen del animal
-                            image_url = animal_images.get(animal_name)
-                            if image_url:
-                                # Mostrar la imagen del animal con tamaño adecuado
-                                columns[i % num_columns].image(image_url, caption=f"Imagen de {animal_info['name']}", width=300)
-                            else:
-                                columns[i % num_columns].warning("No se encontró la imagen del animal")
-
-                            # Mostrar información del animal
-                            columns[i % num_columns].write("Hábitat:", habitat_name)
-                            columns[i % num_columns].write("Clasificación:", animal_info['taxonomy']['class'])
-                            columns[i % num_columns].write("Dieta:", animal_info['characteristics']['diet'])
-                            columns[i % num_columns].write("Velocidad Máxima:", animal_info['characteristics']['top_speed'])
-                            columns[i % num_columns].write("Esperanza de Vida:", animal_info['characteristics']['lifespan'])
-                            columns[i % num_columns].write("Peso:", animal_info['characteristics']['weight'])
-                            columns[i % num_columns].write("Longitud:", animal_info['characteristics']['length'])
-
-                        except (requests.exceptions.RequestException, IndexError) as e:
-                            columns[i % num_columns].error(f"Error en la llamada a la API para el hábitat {habitat_name}: {e}")
-
+                        st.write("Hábitat:", selected_habitat)
+                        st.write("Clasificación:", animal_info['taxonomy'].get('class', 'No disponible'))
+                        st.write("Dieta:", animal_info['characteristics'].get('diet', 'No disponible'))
+                        st.write("Velocidad Máxima:", animal_info['characteristics'].get('top_speed', 'No disponible'))
+                        st.write("Esperanza de Vida:", animal_info['characteristics'].get('lifespan', 'No disponible'))
+                        st.write("Peso:", animal_info['characteristics'].get('weight', 'No disponible'))
+                        st.write("Longitud:", animal_info['characteristics'].get('length', 'No disponible'))
+                    except (requests.exceptions.RequestException, IndexError) as e:
+                        st.error(f"Error en la llamada a la API para el hábitat {selected_habitat}: {e}")
+                else:
+                    st.warning("No se encontró un animal para este hábitat")
+                
         st.session_state["Zoologico"] = self._ZoologicoC
 
     
